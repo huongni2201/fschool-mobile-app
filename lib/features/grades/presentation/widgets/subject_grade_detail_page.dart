@@ -1,12 +1,66 @@
 part of '../pages/semester_grades_page.dart';
 
-class _SubjectGradeDetailPage extends StatelessWidget {
-  final _SubjectGrade subject;
+class _SubjectGradeDetailPage extends StatefulWidget {
+  final String periodId;
+  final SubjectGrade subject;
 
-  const _SubjectGradeDetailPage({required this.subject});
+  const _SubjectGradeDetailPage({
+    required this.periodId,
+    required this.subject,
+  });
+
+  @override
+  State<_SubjectGradeDetailPage> createState() =>
+      _SubjectGradeDetailPageState();
+}
+
+class _SubjectGradeDetailPageState extends State<_SubjectGradeDetailPage> {
+  late final GetSubjectGradeDetailUseCase _getSubjectDetailUseCase;
+  late SubjectGrade _subject;
+
+  Object? _error;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _subject = widget.subject;
+    _getSubjectDetailUseCase = getIt<GetSubjectGradeDetailUseCase>();
+    _loadSubjectDetail();
+  }
+
+  Future<void> _loadSubjectDetail() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final subject = await _getSubjectDetailUseCase(
+        periodId: widget.periodId,
+        subject: widget.subject,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _subject = subject;
+        _isLoading = false;
+      });
+    } catch (error) {
+      if (!mounted) return;
+
+      setState(() {
+        _error = error;
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final subject = _subject;
     final averageLabel =
         subject.average?.toStringAsFixed(1) ??
         SemesterGradeStrings.unavailableScore;
@@ -34,7 +88,15 @@ class _SubjectGradeDetailPage extends StatelessWidget {
                 rankLabel: rankLabel,
               ),
               const SizedBox(height: SemesterGradeSizes.spacing4xl),
-              _ComponentScoreSection(subject: subject),
+              if (_isLoading)
+                _ComponentScoreLoadingCard(accent: _subjectAccent(subject))
+              else if (_error != null)
+                _ComponentScoreErrorCard(
+                  message: _gradeErrorMessage(_error),
+                  onRetry: _loadSubjectDetail,
+                )
+              else
+                _ComponentScoreSection(subject: subject),
             ],
           ),
         ),
@@ -44,7 +106,7 @@ class _SubjectGradeDetailPage extends StatelessWidget {
 }
 
 class _SubjectDetailHeader extends StatelessWidget {
-  final _SubjectGrade subject;
+  final SubjectGrade subject;
 
   const _SubjectDetailHeader({required this.subject});
 
@@ -112,7 +174,7 @@ class _SubjectDetailHeader extends StatelessWidget {
 }
 
 class _SubjectDetailSummaryCard extends StatelessWidget {
-  final _SubjectGrade subject;
+  final SubjectGrade subject;
   final String averageLabel;
   final String rankLabel;
 
@@ -124,6 +186,8 @@ class _SubjectDetailSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = _subjectAccent(subject);
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -131,11 +195,11 @@ class _SubjectDetailSummaryCard extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [subject.accent, subject.accent.withValues(alpha: 0.76)],
+          colors: [accent, accent.withValues(alpha: 0.76)],
         ),
         boxShadow: [
           BoxShadow(
-            color: subject.accent.withValues(alpha: 0.2),
+            color: accent.withValues(alpha: 0.2),
             blurRadius: SemesterGradeSizes.overviewShadowBlur,
             offset: const Offset(0, SemesterGradeSizes.overviewShadowOffsetY),
           ),
@@ -318,7 +382,7 @@ class _SubjectDetailMetric extends StatelessWidget {
 }
 
 class _ComponentScoreSection extends StatelessWidget {
-  final _SubjectGrade subject;
+  final SubjectGrade subject;
 
   const _ComponentScoreSection({required this.subject});
 
@@ -343,12 +407,13 @@ class _ComponentScoreSection extends StatelessWidget {
 }
 
 class _ComponentScorePanel extends StatelessWidget {
-  final _SubjectGrade subject;
+  final SubjectGrade subject;
 
   const _ComponentScorePanel({required this.subject});
 
   @override
   Widget build(BuildContext context) {
+    final accent = _subjectAccent(subject);
     final averageLabel =
         subject.average?.toStringAsFixed(2) ??
         SemesterGradeStrings.unavailableScore;
@@ -361,10 +426,10 @@ class _ComponentScorePanel extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           SemesterGradeSizes.componentListRadius,
         ),
-        border: Border.all(color: subject.accent.withValues(alpha: 0.14)),
+        border: Border.all(color: accent.withValues(alpha: 0.14)),
         boxShadow: [
           BoxShadow(
-            color: subject.accent.withValues(alpha: 0.06),
+            color: accent.withValues(alpha: 0.06),
             blurRadius: SemesterGradeSizes.overviewShadowBlur,
             offset: const Offset(0, SemesterGradeSizes.overviewShadowOffsetY),
           ),
@@ -373,16 +438,13 @@ class _ComponentScorePanel extends StatelessWidget {
       child: Column(
         children: [
           for (var index = 0; index < subject.scores.length; index++) ...[
-            _ComponentScoreRow(
-              score: subject.scores[index],
-              accent: subject.accent,
-            ),
+            _ComponentScoreRow(score: subject.scores[index], accent: accent),
             if (index != subject.scores.length - 1)
-              Divider(height: 1, color: subject.accent.withValues(alpha: 0.1)),
+              Divider(height: 1, color: accent.withValues(alpha: 0.1)),
           ],
-          Divider(height: 1, color: subject.accent.withValues(alpha: 0.1)),
+          Divider(height: 1, color: accent.withValues(alpha: 0.1)),
           _ComponentScoreSummary(
-            accent: subject.accent,
+            accent: accent,
             averageLabel: averageLabel,
             averageQualityLabel: averageQualityLabel,
             rankLabel: rankLabel,
@@ -393,8 +455,77 @@ class _ComponentScorePanel extends StatelessWidget {
   }
 }
 
+class _ComponentScoreLoadingCard extends StatelessWidget {
+  final Color accent;
+
+  const _ComponentScoreLoadingCard({required this.accent});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(SemesterGradeSizes.spacing3xl),
+      decoration: BoxDecoration(
+        color: SemesterGradeColors.surface,
+        borderRadius: BorderRadius.circular(
+          SemesterGradeSizes.componentListRadius,
+        ),
+        border: Border.all(color: accent.withValues(alpha: 0.14)),
+      ),
+      child: Center(child: CircularProgressIndicator(color: accent)),
+    );
+  }
+}
+
+class _ComponentScoreErrorCard extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+
+  const _ComponentScoreErrorCard({
+    required this.message,
+    required this.onRetry,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(SemesterGradeSizes.spacing3xl),
+      decoration: BoxDecoration(
+        color: SemesterGradeColors.surface,
+        borderRadius: BorderRadius.circular(
+          SemesterGradeSizes.componentListRadius,
+        ),
+        border: Border.all(color: SemesterGradeColors.border),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.wifi_off_rounded,
+            color: SemesterGradeColors.primary,
+            size: 34,
+          ),
+          const SizedBox(height: SemesterGradeSizes.spacingMd),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: SemesterGradeColors.textMuted,
+              fontSize: SemesterGradeSizes.overviewSubtitleSize,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: SemesterGradeSizes.spacingLg),
+          TextButton(onPressed: onRetry, child: const Text('Retry')),
+        ],
+      ),
+    );
+  }
+}
+
 class _ComponentScoreRow extends StatelessWidget {
-  final _ComponentScore score;
+  final ComponentScore score;
   final Color accent;
 
   const _ComponentScoreRow({required this.score, required this.accent});

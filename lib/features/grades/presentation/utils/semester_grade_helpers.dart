@@ -1,6 +1,6 @@
 part of '../pages/semester_grades_page.dart';
 
-double _averageOf(List<_SubjectGrade> subjects) {
+double _averageOf(List<SubjectGrade> subjects) {
   final scoredSubjects = subjects
       .where((subject) => subject.average != null)
       .toList(growable: false);
@@ -15,8 +15,8 @@ double _averageOf(List<_SubjectGrade> subjects) {
   return total / scoredSubjects.length;
 }
 
-_SubjectGrade? _strongestSubjectOf(List<_SubjectGrade> subjects) {
-  _SubjectGrade? strongestSubject;
+SubjectGrade? _strongestSubjectOf(List<SubjectGrade> subjects) {
+  SubjectGrade? strongestSubject;
 
   for (final subject in subjects) {
     final average = subject.average;
@@ -38,6 +38,18 @@ String _rankLabel(double average) {
   if (average >= 5) return SemesterGradeStrings.rankMedium;
 
   return SemesterGradeStrings.rankNeedsImprovement;
+}
+
+Color _subjectAccent(SubjectGrade _) {
+  return SemesterGradeColors.primary;
+}
+
+String _gradeErrorMessage(Object? error) {
+  final message = error?.toString().trim();
+
+  if (message != null && message.isNotEmpty) return message;
+
+  return 'Cannot load grades';
 }
 
 IconData _subjectIcon(String group) {

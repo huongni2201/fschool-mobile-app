@@ -1,7 +1,7 @@
-part of '../pages/semester_grades_page.dart';
+﻿part of '../pages/semester_grades_page.dart';
 
 class _SemesterSwitcher extends StatelessWidget {
-  final List<_SemesterOption> options;
+  final List<SemesterOption> options;
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
@@ -37,7 +37,7 @@ class _SemesterSwitcher extends StatelessWidget {
 }
 
 class _SemesterTab extends StatelessWidget {
-  final _SemesterOption option;
+  final SemesterOption option;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -87,3 +87,4 @@ class _SemesterTab extends StatelessWidget {
     );
   }
 }
+

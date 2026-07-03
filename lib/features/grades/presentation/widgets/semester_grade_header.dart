@@ -1,4 +1,4 @@
-part of '../pages/semester_grades_page.dart';
+﻿part of '../pages/semester_grades_page.dart';
 
 class _GradePageHeader extends StatelessWidget {
   final String title;
@@ -68,3 +68,4 @@ class _GradePageHeader extends StatelessWidget {
     );
   }
 }
+

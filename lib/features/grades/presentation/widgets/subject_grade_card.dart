@@ -17,13 +17,15 @@ class _SubjectListHeader extends StatelessWidget {
 }
 
 class _SubjectGradeCard extends StatelessWidget {
-  final _SubjectGrade subject;
+  final String periodId;
+  final SubjectGrade subject;
 
-  const _SubjectGradeCard({required this.subject});
+  const _SubjectGradeCard({required this.periodId, required this.subject});
 
   @override
   Widget build(BuildContext context) {
     final average = subject.average;
+    final accent = _subjectAccent(subject);
 
     return Material(
       color: SemesterGradeColors.surface,
@@ -56,14 +58,14 @@ class _SubjectGradeCard extends StatelessWidget {
                     width: SemesterGradeSizes.subjectIconBoxSize,
                     height: SemesterGradeSizes.subjectIconBoxSize,
                     decoration: BoxDecoration(
-                      color: subject.accent.withValues(alpha: 0.12),
+                      color: accent.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(
                         SemesterGradeSizes.subjectIconBoxRadius,
                       ),
                     ),
                     child: Icon(
                       _subjectIcon(subject.group),
-                      color: subject.accent,
+                      color: accent,
                       size: SemesterGradeSizes.subjectIconSize,
                     ),
                   ),
@@ -105,7 +107,7 @@ class _SubjectGradeCard extends StatelessWidget {
                     averageLabel:
                         average?.toStringAsFixed(1) ??
                         SemesterGradeStrings.unavailableScore,
-                    accent: subject.accent,
+                    accent: accent,
                   ),
                 ],
               ),
@@ -116,10 +118,11 @@ class _SubjectGradeCard extends StatelessWidget {
     );
   }
 
-  void _openSubjectDetail(BuildContext context, _SubjectGrade subject) {
+  void _openSubjectDetail(BuildContext context, SubjectGrade subject) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => _SubjectGradeDetailPage(subject: subject),
+        builder: (_) =>
+            _SubjectGradeDetailPage(periodId: periodId, subject: subject),
       ),
     );
   }

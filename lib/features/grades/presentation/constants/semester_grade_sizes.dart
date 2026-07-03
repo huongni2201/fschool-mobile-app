@@ -1,4 +1,4 @@
-abstract final class SemesterGradeSizes {
+﻿abstract final class SemesterGradeSizes {
   static const double pagePaddingHorizontal = 24;
   static const double pagePaddingTop = 14;
   static const double pagePaddingBottom = 28;
@@ -121,3 +121,4 @@ abstract final class SemesterGradeSizes {
   static const double componentValueSize = 21;
   static const double componentSectionBadgeSize = 12;
 }
+
