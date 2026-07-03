@@ -1,4 +1,5 @@
-﻿import 'package:myfschool/core/error/exceptions.dart';
+import 'package:myfschool/core/constants/app_strings.dart';
+import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
 import 'package:myfschool/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:myfschool/features/home/data/models/home_dashboard.dart';
@@ -15,12 +16,12 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
     final responseData = _jsonMap(response.data);
 
     if (responseData.isEmpty) {
-      throw const ParsingException('Home dashboard response must be a JSON object');
+      throw const ParsingException(AppStrings.homeDashboardInvalidResponse);
     }
 
     if (responseData['success'] == false) {
       throw ServerException(
-        _backendMessage(responseData) ?? 'Không thể tải dữ liệu trang chủ',
+        _backendMessage(responseData) ?? AppStrings.homeDashboardLoadFailed,
       );
     }
 

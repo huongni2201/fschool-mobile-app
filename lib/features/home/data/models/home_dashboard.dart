@@ -1,4 +1,6 @@
-﻿class HomeDashboard {
+import '../../../../core/constants/app_strings.dart';
+
+class HomeDashboard {
   final String studentName;
   final String? studentCode;
   final String avatarText;
@@ -41,7 +43,7 @@
           'studentName',
           'displayName',
         ]) ??
-        'Học sinh';
+        AppStrings.homeDefaultStudentName;
 
     final studentCode =
         _stringFromKeys(student, const ['studentCode', 'code', 'studentId']) ??
@@ -75,7 +77,10 @@
 
     HomeLesson? currentLesson = currentSource.isEmpty
         ? null
-        : HomeLesson.fromJson(currentSource, fallbackTotalLessons: totalLessons);
+        : HomeLesson.fromJson(
+            currentSource,
+            fallbackTotalLessons: totalLessons,
+          );
 
     currentLesson ??= scheduleItems
         .where((item) => item.status == HomeScheduleStatus.live)
@@ -95,7 +100,11 @@
       studentCode: studentCode,
       avatarText: _avatarText(studentName),
       todayTitle:
-          _stringFromKeys(source, const ['todayTitle', 'todayLabel', 'dateLabel']) ??
+          _stringFromKeys(source, const [
+            'todayTitle',
+            'todayLabel',
+            'dateLabel',
+          ]) ??
           _defaultTodayTitle(DateTime.now()),
       currentLesson: currentLesson,
       schedules: scheduleItems,
@@ -134,7 +143,7 @@ class HomeLesson {
             'className',
             'name',
           ]) ??
-          'Tiết học hiện tại',
+          AppStrings.homeCurrentLessonDefault,
       periodLabel: _periodLabel(json),
       room:
           _stringFromKeys(json, const ['roomName', 'room', 'classroom']) ?? '',
@@ -148,7 +157,7 @@ class HomeLesson {
           '',
       statusLabel:
           _stringFromKeys(json, const ['statusLabel', 'statusText', 'label']) ??
-          'Đang diễn ra',
+          AppStrings.homeCurrentLessonOngoing,
       totalLessonsToday:
           _intFromKeys(json, const [
             'totalLessonsToday',
@@ -160,7 +169,10 @@ class HomeLesson {
     );
   }
 
-  factory HomeLesson.fromSchedule(HomeScheduleItem item, int totalLessonsToday) {
+  factory HomeLesson.fromSchedule(
+    HomeScheduleItem item,
+    int totalLessonsToday,
+  ) {
     return HomeLesson(
       subject: item.subject,
       periodLabel: item.periodLabel,
@@ -173,10 +185,13 @@ class HomeLesson {
 
   String get detailLabel {
     return [
-      periodLabel,
-      room,
-      teacherName.isEmpty ? null : 'GV $teacherName',
-    ].whereType<String>().where((item) => item.trim().isNotEmpty).join(' · ');
+          periodLabel,
+          room,
+          teacherName.isEmpty ? null : AppStrings.homeTeacherName(teacherName),
+        ]
+        .whereType<String>()
+        .where((item) => item.trim().isNotEmpty)
+        .join(AppStrings.homeDetailSeparator);
   }
 }
 
@@ -216,7 +231,7 @@ class HomeScheduleItem {
             'className',
             'name',
           ]) ??
-          'Môn học',
+          AppStrings.homeSubjectDefault,
       periodLabel: _periodLabel(json),
       room:
           _stringFromKeys(json, const ['roomName', 'room', 'classroom']) ?? '',
@@ -236,11 +251,10 @@ class HomeScheduleItem {
   }
 
   String get detailLabel {
-    return [
-      periodLabel,
-      room,
-      teacherName.isEmpty ? null : teacherName,
-    ].whereType<String>().where((item) => item.trim().isNotEmpty).join(' · ');
+    return [periodLabel, room, teacherName.isEmpty ? null : teacherName]
+        .whereType<String>()
+        .where((item) => item.trim().isNotEmpty)
+        .join(AppStrings.homeDetailSeparator);
   }
 }
 
@@ -276,7 +290,7 @@ class HomeGradeItem {
             'courseName',
             'name',
           ]) ??
-          'Môn học',
+          AppStrings.homeSubjectDefault,
       score: score,
       maxScore: maxScore <= 0 ? 10 : maxScore,
       label:
@@ -301,7 +315,7 @@ class HomeGradeItem {
   String get scoreLabel {
     final currentScore = score;
 
-    if (currentScore == null) return '--';
+    if (currentScore == null) return AppStrings.homeUnavailableScore;
 
     return currentScore.toStringAsFixed(1);
   }
@@ -346,7 +360,10 @@ List<Map<String, dynamic>> _firstList(
     final value = source[key];
 
     if (value is List) {
-      return value.map(_mapFromObject).where((item) => item.isNotEmpty).toList();
+      return value
+          .map(_mapFromObject)
+          .where((item) => item.isNotEmpty)
+          .toList();
     }
   }
 
@@ -426,7 +443,9 @@ String _periodLabel(Map<String, dynamic> source) {
 
   if (rawPeriod == null) return '';
 
-  return rawPeriod.toLowerCase().contains('tiết') ? rawPeriod : 'Tiết $rawPeriod';
+  return rawPeriod.toLowerCase().contains('tiáº¿t')
+      ? rawPeriod
+      : AppStrings.homePeriodLabel(rawPeriod);
 }
 
 String _timeLabel(Map<String, dynamic> source) {
@@ -441,10 +460,12 @@ String _timeLabel(Map<String, dynamic> source) {
     _stringFromKeys(source, const ['endTime', 'end', 'to']),
   );
 
-  if (start != null && end != null) return '$start - $end';
+  if (start != null && end != null) {
+    return '$start${AppStrings.homeTimeRangeSeparator}$end';
+  }
   if (start != null) return start;
 
-  return '--:--';
+  return AppStrings.homeUnknownTime;
 }
 
 String? _clockFromString(String? value) {
@@ -483,14 +504,14 @@ HomeScheduleStatus _parseScheduleStatus(String? rawStatus) {
       value.contains('current') ||
       value.contains('ongoing') ||
       value.contains('progress') ||
-      value.contains('đang') ||
+      value.contains('Ä‘ang') ||
       value.contains('dang')) {
     return HomeScheduleStatus.live;
   }
 
   if (value.contains('next') ||
       value.contains('upcoming') ||
-      value.contains('tiếp') ||
+      value.contains('tiáº¿p') ||
       value.contains('tiep')) {
     return HomeScheduleStatus.next;
   }
@@ -500,22 +521,22 @@ HomeScheduleStatus _parseScheduleStatus(String? rawStatus) {
 
 String _defaultScheduleStatusLabel(HomeScheduleStatus status) {
   return switch (status) {
-    HomeScheduleStatus.done => 'Xong',
-    HomeScheduleStatus.live => 'Live',
-    HomeScheduleStatus.next => 'Tiếp',
+    HomeScheduleStatus.done => AppStrings.homeScheduleStatusDone,
+    HomeScheduleStatus.live => AppStrings.homeScheduleStatusLive,
+    HomeScheduleStatus.next => AppStrings.homeScheduleStatusNext,
     HomeScheduleStatus.normal => '',
   };
 }
 
 String _gradeLabel(double? score) {
-  if (score == null) return 'Chưa có điểm';
-  if (score >= 9) return 'Xuất sắc';
-  if (score >= 8) return 'Giỏi';
-  if (score >= 7) return 'Khá';
-  if (score >= 6.5) return 'TB Khá';
-  if (score >= 5) return 'Trung bình';
+  if (score == null) return AppStrings.homeGradeNoScore;
+  if (score >= 9) return AppStrings.homeGradeExcellent;
+  if (score >= 8) return AppStrings.homeGradeGood;
+  if (score >= 7) return AppStrings.homeGradeFair;
+  if (score >= 6.5) return AppStrings.homeGradeMediumFair;
+  if (score >= 5) return AppStrings.homeGradeMedium;
 
-  return 'Cần cải thiện';
+  return AppStrings.homeGradeNeedsImprovement;
 }
 
 String _avatarText(String name) {
@@ -525,7 +546,7 @@ String _avatarText(String name) {
       .where((part) => part.isNotEmpty)
       .toList(growable: false);
 
-  if (parts.isEmpty) return 'HS';
+  if (parts.isEmpty) return AppStrings.homeAvatarFallback;
   if (parts.length == 1) {
     final end = parts.first.length < 2 ? parts.first.length : 2;
 
@@ -538,14 +559,14 @@ String _avatarText(String name) {
 
 String _defaultTodayTitle(DateTime date) {
   final dayName = switch (date.weekday) {
-    DateTime.monday => 'THỨ HAI',
-    DateTime.tuesday => 'THỨ BA',
-    DateTime.wednesday => 'THỨ TƯ',
-    DateTime.thursday => 'THỨ NĂM',
-    DateTime.friday => 'THỨ SÁU',
-    DateTime.saturday => 'THỨ BẢY',
-    _ => 'CHỦ NHẬT',
+    DateTime.monday => AppStrings.monday,
+    DateTime.tuesday => AppStrings.tuesday,
+    DateTime.wednesday => AppStrings.wednesday,
+    DateTime.thursday => AppStrings.thursday,
+    DateTime.friday => AppStrings.friday,
+    DateTime.saturday => AppStrings.saturday,
+    _ => AppStrings.sunday,
   };
 
-  return 'HÔM NAY · $dayName';
+  return AppStrings.homeDefaultTodayTitle(dayName);
 }
