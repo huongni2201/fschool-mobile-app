@@ -8,6 +8,9 @@ class _HomeDashboardView extends StatelessWidget {
   final VoidCallback onLogout;
   final ValueChanged<String> onUnavailableFeature;
   final VoidCallback onOpenGrades;
+  final VoidCallback onOpenTimetable;
+  final VoidCallback onOpenRequests;
+  final VoidCallback onOpenClubs;
 
   const _HomeDashboardView({
     super.key,
@@ -18,6 +21,9 @@ class _HomeDashboardView extends StatelessWidget {
     required this.onLogout,
     required this.onUnavailableFeature,
     required this.onOpenGrades,
+    required this.onOpenTimetable,
+    required this.onOpenRequests,
+    required this.onOpenClubs,
   });
 
   @override
@@ -51,12 +57,15 @@ class _HomeDashboardView extends StatelessWidget {
           _ShortcutGrid(
             onTap: onUnavailableFeature,
             onOpenGrades: onOpenGrades,
+            onOpenTimetable: onOpenTimetable,
+            onOpenRequests: onOpenRequests,
+            onOpenClubs: onOpenClubs,
           ),
           const SizedBox(height: 18),
           _SectionHeader(
             title: AppStrings.homeTodaySchedule,
             actionLabel: AppStrings.homeViewWeek,
-            onAction: () => onUnavailableFeature(AppStrings.homeWeeklySchedule),
+            onAction: onOpenTimetable,
           ),
           const SizedBox(height: 8),
           schedules.isEmpty

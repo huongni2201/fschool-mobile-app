@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/di/service_locator.dart';
+import '../../../../core/widgets/main_bottom_navigation.dart';
 import '../../data/models/semester_grade_models.dart';
 import '../../domain/usecases/get_grade_periods_usecase.dart';
 import '../../domain/usecases/get_semester_grade_summary_usecase.dart';
@@ -208,6 +209,7 @@ class _SemesterGradesScaffold extends StatelessWidget {
           child: child,
         ),
       ),
+      bottomNavigationBar: const MainBottomNavigation(),
     );
   }
 }

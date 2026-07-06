@@ -3,13 +3,23 @@ part of '../pages/home_page.dart';
 class _ShortcutGrid extends StatelessWidget {
   final ValueChanged<String> onTap;
   final VoidCallback onOpenGrades;
+  final VoidCallback onOpenTimetable;
+  final VoidCallback onOpenRequests;
+  final VoidCallback onOpenClubs;
 
-  const _ShortcutGrid({required this.onTap, required this.onOpenGrades});
+  const _ShortcutGrid({
+    required this.onTap,
+    required this.onOpenGrades,
+    required this.onOpenTimetable,
+    required this.onOpenRequests,
+    required this.onOpenClubs,
+  });
 
   static const List<_ShortcutItem> _items = [
     _ShortcutItem(
       Icons.calendar_month_outlined,
       AppStrings.homeShortcutTimetable,
+      opensTimetable: true,
     ),
     _ShortcutItem(
       Icons.bar_chart_rounded,
@@ -21,10 +31,17 @@ class _ShortcutGrid extends StatelessWidget {
       AppStrings.homeShortcutAttendance,
     ),
     _ShortcutItem(Icons.credit_card_rounded, AppStrings.homeShortcutTuition),
-    _ShortcutItem(Icons.assignment_outlined, AppStrings.homeShortcutHomework),
     _ShortcutItem(Icons.alarm_outlined, AppStrings.homeShortcutExams),
-    _ShortcutItem(Icons.description_outlined, AppStrings.homeShortcutDocuments),
-    _ShortcutItem(Icons.more_horiz_rounded, AppStrings.homeShortcutMore),
+    _ShortcutItem(
+      Icons.edit_document,
+      AppStrings.homeShortcutRequests,
+      opensRequests: true,
+    ),
+    _ShortcutItem(
+      Icons.diversity_3_rounded,
+      AppStrings.homeShortcutClubs,
+      opensClubs: true,
+    ),
   ];
 
   @override
@@ -44,7 +61,15 @@ class _ShortcutGrid extends StatelessWidget {
 
         return _ShortcutTile(
           item: item,
-          onTap: item.opensGrades ? onOpenGrades : () => onTap(item.label),
+          onTap: item.opensTimetable
+              ? onOpenTimetable
+              : item.opensGrades
+              ? onOpenGrades
+              : item.opensRequests
+              ? onOpenRequests
+              : item.opensClubs
+              ? onOpenClubs
+              : () => onTap(item.label),
         );
       },
     );
@@ -55,8 +80,18 @@ class _ShortcutItem {
   final IconData icon;
   final String label;
   final bool opensGrades;
+  final bool opensTimetable;
+  final bool opensRequests;
+  final bool opensClubs;
 
-  const _ShortcutItem(this.icon, this.label, {this.opensGrades = false});
+  const _ShortcutItem(
+    this.icon,
+    this.label, {
+    this.opensGrades = false,
+    this.opensTimetable = false,
+    this.opensRequests = false,
+    this.opensClubs = false,
+  });
 }
 
 class _ShortcutTile extends StatelessWidget {

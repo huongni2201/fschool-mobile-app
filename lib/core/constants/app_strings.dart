@@ -15,15 +15,19 @@ abstract final class AppStrings {
   static const String phoneRequired = 'Vui lòng nhập số điện thoại';
   static const String phoneInvalid = 'Số điện thoại không hợp lệ';
   static const String passwordRequired = 'Vui lòng nhập mật khẩu';
-  static const String passwordTooShort = 'Mật khẩu phải có ít nhất 6 ký tự';
+  static const String passwordTooShort =
+      'Mật khẩu phải có ít nhất 6 ký tự';
 
   static const String loginInvalidCredentials =
       'Số điện thoại hoặc mật khẩu không đúng';
-  static const String serverError = 'Máy chủ đang lỗi, vui lòng thử lại sau';
-  static const String connectionError = 'Không thể kết nối đến máy chủ';
+  static const String serverError =
+      'Máy chủ đang lỗi, vui lòng thử lại sau';
+  static const String connectionError =
+      'Không thể kết nối đến máy chủ';
   static const String invalidLoginResponse =
       'Dữ liệu đăng nhập trả về không hợp lệ';
-  static const String loginFailed = 'Đăng nhập thất bại, vui lòng thử lại';
+  static const String loginFailed =
+      'Đăng nhập thất bại, vui lòng thử lại';
   static const String loginSuccess = 'Đăng nhập thành công';
 
   static const String homeDefaultStudentName = 'Học sinh';
@@ -31,7 +35,8 @@ abstract final class AppStrings {
   static const String homeStudentCodePrefix = 'Mã học sinh';
   static const String homeNotification = 'Thông báo';
   static const String homeFeatureInProgress = 'đang được phát triển';
-  static const String homeRefreshDataFailed = 'Không thể làm mới dữ liệu';
+  static const String homeRefreshDataFailed =
+      'Không thể làm mới dữ liệu';
   static const String homeMainFunctions = 'Chức năng chính';
   static const String homeTodaySchedule = 'TKB hôm nay';
   static const String homeViewWeek = 'Xem tuần';
@@ -47,9 +52,11 @@ abstract final class AppStrings {
       'Điểm mới nhất sẽ hiển thị tại đây sau khi được cập nhật.';
   static const String homeCurrentLessonDefault = 'Tiết học hiện tại';
   static const String homeCurrentLessonOngoing = 'Đang diễn ra';
-  static const String homeCurrentRoomUpdating = 'Đang cập nhật phòng học';
+  static const String homeCurrentRoomUpdating =
+      'Đang cập nhật phòng học';
   static const String homeReadyForStudy = 'Sẵn sàng học tập';
-  static const String homeNoCurrentLessonTitle = 'Không có tiết đang diễn ra';
+  static const String homeNoCurrentLessonTitle =
+      'Không có tiết đang diễn ra';
   static const String homeNoCurrentLessonMessage =
       'Kiểm tra lịch học bên dưới hoặc kéo xuống để làm mới.';
   static const String homeLessonCountToday = 'tiết hôm nay';
@@ -58,7 +65,8 @@ abstract final class AppStrings {
   static const String homeRetry = 'Thử lại';
   static const String homeLoadFailedTitle = 'Chưa tải được trang chủ';
   static const String homeReload = 'Tải lại';
-  static const String homeLogoutAndLoginAgain = 'Đăng xuất và đăng nhập lại';
+  static const String homeLogoutAndLoginAgain =
+      'Đăng xuất và đăng nhập lại';
   static const String homeNavHome = 'Trang chủ';
   static const String homeNavSchedule = 'Lịch học';
   static const String homeNavMessages = 'Tin nhắn';
@@ -80,6 +88,8 @@ abstract final class AppStrings {
   static const String homeShortcutHomework = 'Bài tập';
   static const String homeShortcutExams = 'Lịch thi';
   static const String homeShortcutDocuments = 'Tài liệu';
+  static const String homeShortcutRequests = 'Đơn từ';
+  static const String homeShortcutClubs = 'Câu lạc bộ';
   static const String homeShortcutMore = 'Xem thêm';
   static const String homeTeacherPrefix = 'GV';
   static const String homeAvatarFallback = 'HS';
@@ -110,12 +120,14 @@ abstract final class AppStrings {
   static const String copyright = '© 2026 FPT Education. All rights reserved.';
   static const String version = 'Version 1.0.0';
 
-  static const String resetPasswordTitle = 'Đặt lại mật khẩu của bạn';
+  static const String resetPasswordTitle =
+      'Đặt lại mật khẩu của bạn';
   static const String verifyStep = 'Xác minh';
   static const String otpStep = 'Mã OTP';
   static const String newPasswordStep = 'Mật khẩu mới';
 
-  static const String enterPhoneForOtp = 'Nhập số điện thoại để nhận mã OTP';
+  static const String enterPhoneForOtp =
+      'Nhập số điện thoại để nhận mã OTP';
 
   static const String sendOtp = 'Gửi mã OTP';
   static const String or = 'hoặc';

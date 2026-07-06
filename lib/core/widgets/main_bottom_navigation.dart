@@ -1,9 +1,18 @@
-part of '../pages/home_page.dart';
+import 'package:flutter/material.dart';
 
-class _HomeBottomNavigation extends StatelessWidget {
-  final ValueChanged<String> onSelectUnavailable;
+import '../constants/app_colors.dart';
+import '../constants/app_strings.dart';
+import '../router/router_names.dart';
 
-  const _HomeBottomNavigation({required this.onSelectUnavailable});
+enum MainBottomNavTab { home, schedule, messages, profile, none }
+
+class MainBottomNavigation extends StatelessWidget {
+  final MainBottomNavTab activeTab;
+
+  const MainBottomNavigation({
+    super.key,
+    this.activeTab = MainBottomNavTab.none,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +26,13 @@ class _HomeBottomNavigation extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: _BottomNavItem(
               icon: Icons.home_outlined,
               activeIcon: Icons.home_rounded,
               label: AppStrings.homeNavHome,
-              isActive: true,
+              isActive: activeTab == MainBottomNavTab.home,
+              onTap: () => _openRoute(context, RouterNames.home),
             ),
           ),
           Expanded(
@@ -30,7 +40,8 @@ class _HomeBottomNavigation extends StatelessWidget {
               icon: Icons.calendar_today_outlined,
               activeIcon: Icons.calendar_month_rounded,
               label: AppStrings.homeNavSchedule,
-              onTap: () => onSelectUnavailable(AppStrings.homeNavSchedule),
+              isActive: activeTab == MainBottomNavTab.schedule,
+              onTap: () => _openRoute(context, RouterNames.timetable),
             ),
           ),
           Expanded(
@@ -38,7 +49,9 @@ class _HomeBottomNavigation extends StatelessWidget {
               icon: Icons.chat_bubble_outline_rounded,
               activeIcon: Icons.chat_bubble_rounded,
               label: AppStrings.homeNavMessages,
-              onTap: () => onSelectUnavailable(AppStrings.homeNavMessages),
+              isActive: activeTab == MainBottomNavTab.messages,
+              onTap: () =>
+                  _showUnavailable(context, AppStrings.homeNavMessages),
             ),
           ),
           Expanded(
@@ -46,11 +59,24 @@ class _HomeBottomNavigation extends StatelessWidget {
               icon: Icons.person_outline_rounded,
               activeIcon: Icons.person_rounded,
               label: AppStrings.homeNavProfile,
-              onTap: () => onSelectUnavailable(AppStrings.homeNavProfile),
+              isActive: activeTab == MainBottomNavTab.profile,
+              onTap: () => _openRoute(context, RouterNames.profile),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _openRoute(BuildContext context, String routeName) {
+    if (ModalRoute.of(context)?.settings.name == routeName) return;
+
+    Navigator.of(context).pushNamedAndRemoveUntil(routeName, (route) => false);
+  }
+
+  void _showUnavailable(BuildContext context, String featureName) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(AppStrings.homeFeatureUnavailable(featureName))),
     );
   }
 }
@@ -60,14 +86,14 @@ class _BottomNavItem extends StatelessWidget {
   final IconData activeIcon;
   final String label;
   final bool isActive;
-  final VoidCallback? onTap;
+  final VoidCallback onTap;
 
   const _BottomNavItem({
     required this.icon,
     required this.activeIcon,
     required this.label,
+    required this.onTap,
     this.isActive = false,
-    this.onTap,
   });
 
   @override

@@ -7,13 +7,13 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/router/router_names.dart';
 import '../../../../core/storage/token_storage.dart';
+import '../../../../core/widgets/main_bottom_navigation.dart';
 import '../../data/models/home_dashboard.dart';
 import '../../domain/usecases/get_home_dashboard_usecase.dart';
 
 part '../utils/home_ui_helpers.dart';
 part '../widgets/current_lesson_card.dart';
 part '../widgets/grade_grid.dart';
-part '../widgets/home_bottom_navigation.dart';
 part '../widgets/home_dashboard_view.dart';
 part '../widgets/home_header.dart';
 part '../widgets/home_section_widgets.dart';
@@ -106,6 +106,18 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushNamed(RouterNames.semesterGrades);
   }
 
+  void _openTimetable() {
+    Navigator.of(context).pushNamed(RouterNames.timetable);
+  }
+
+  void _openRequests() {
+    Navigator.of(context).pushNamed(RouterNames.requests);
+  }
+
+  void _openClubs() {
+    Navigator.of(context).pushNamed(RouterNames.clubs);
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboard = _dashboard;
@@ -125,8 +137,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: _HomeBottomNavigation(
-        onSelectUnavailable: _showUnavailableFeature,
+      bottomNavigationBar: const MainBottomNavigation(
+        activeTab: MainBottomNavTab.home,
       ),
     );
   }
@@ -154,6 +166,9 @@ class _HomePageState extends State<HomePage> {
       onLogout: _logout,
       onUnavailableFeature: _showUnavailableFeature,
       onOpenGrades: _openSemesterGrades,
+      onOpenTimetable: _openTimetable,
+      onOpenRequests: _openRequests,
+      onOpenClubs: _openClubs,
     );
   }
 }

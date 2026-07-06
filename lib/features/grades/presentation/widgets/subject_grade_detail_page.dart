@@ -101,6 +101,7 @@ class _SubjectGradeDetailPageState extends State<_SubjectGradeDetailPage> {
           ),
         ),
       ),
+      bottomNavigationBar: const MainBottomNavigation(),
     );
   }
 }
