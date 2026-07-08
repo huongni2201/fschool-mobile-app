@@ -750,21 +750,7 @@ class _SummaryAverage extends StatelessWidget {
           ),
           child: Icon(Icons.bar_chart_rounded, color: accent, size: 28),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            SemesterGradeStrings.subjectAverageTitle,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: SemesterGradeColors.textStrong,
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-              height: 1.2,
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
+        const SizedBox(width: 16),
         Text(
           averageLabel,
           style: TextStyle(

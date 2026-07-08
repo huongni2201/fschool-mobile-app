@@ -110,6 +110,14 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushNamed(RouterNames.timetable);
   }
 
+  void _openExamSchedule() {
+    Navigator.of(context).pushNamed(RouterNames.examSchedule);
+  }
+
+  void _openNotifications() {
+    Navigator.of(context).pushNamed(RouterNames.notifications);
+  }
+
   void _openRequests() {
     Navigator.of(context).pushNamed(RouterNames.requests);
   }
@@ -167,6 +175,8 @@ class _HomePageState extends State<HomePage> {
       onUnavailableFeature: _showUnavailableFeature,
       onOpenGrades: _openSemesterGrades,
       onOpenTimetable: _openTimetable,
+      onOpenExams: _openExamSchedule,
+      onOpenNotifications: _openNotifications,
       onOpenRequests: _openRequests,
       onOpenClubs: _openClubs,
     );

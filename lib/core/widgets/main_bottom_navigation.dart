@@ -4,7 +4,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../router/router_names.dart';
 
-enum MainBottomNavTab { home, schedule, messages, profile, none }
+enum MainBottomNavTab { home, schedule, notifications, profile, none }
 
 class MainBottomNavigation extends StatelessWidget {
   final MainBottomNavTab activeTab;
@@ -46,12 +46,11 @@ class MainBottomNavigation extends StatelessWidget {
           ),
           Expanded(
             child: _BottomNavItem(
-              icon: Icons.chat_bubble_outline_rounded,
-              activeIcon: Icons.chat_bubble_rounded,
-              label: AppStrings.homeNavMessages,
-              isActive: activeTab == MainBottomNavTab.messages,
-              onTap: () =>
-                  _showUnavailable(context, AppStrings.homeNavMessages),
+              icon: Icons.notifications_none_rounded,
+              activeIcon: Icons.notifications_rounded,
+              label: AppStrings.homeNavNotifications,
+              isActive: activeTab == MainBottomNavTab.notifications,
+              onTap: () => _openRoute(context, RouterNames.notifications),
             ),
           ),
           Expanded(
@@ -72,12 +71,6 @@ class MainBottomNavigation extends StatelessWidget {
     if (ModalRoute.of(context)?.settings.name == routeName) return;
 
     Navigator.of(context).pushNamedAndRemoveUntil(routeName, (route) => false);
-  }
-
-  void _showUnavailable(BuildContext context, String featureName) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppStrings.homeFeatureUnavailable(featureName))),
-    );
   }
 }
 

@@ -9,6 +9,8 @@ class _HomeDashboardView extends StatelessWidget {
   final ValueChanged<String> onUnavailableFeature;
   final VoidCallback onOpenGrades;
   final VoidCallback onOpenTimetable;
+  final VoidCallback onOpenExams;
+  final VoidCallback onOpenNotifications;
   final VoidCallback onOpenRequests;
   final VoidCallback onOpenClubs;
 
@@ -22,6 +24,8 @@ class _HomeDashboardView extends StatelessWidget {
     required this.onUnavailableFeature,
     required this.onOpenGrades,
     required this.onOpenTimetable,
+    required this.onOpenExams,
+    required this.onOpenNotifications,
     required this.onOpenRequests,
     required this.onOpenClubs,
   });
@@ -39,8 +43,7 @@ class _HomeDashboardView extends StatelessWidget {
           _HomeHeader(
             dashboard: dashboard,
             onLogout: onLogout,
-            onNotificationTap: () =>
-                onUnavailableFeature(AppStrings.homeNotification),
+            onNotificationTap: onOpenNotifications,
           ),
           if (hasRefreshError) ...[
             const SizedBox(height: 14),
@@ -58,6 +61,7 @@ class _HomeDashboardView extends StatelessWidget {
             onTap: onUnavailableFeature,
             onOpenGrades: onOpenGrades,
             onOpenTimetable: onOpenTimetable,
+            onOpenExams: onOpenExams,
             onOpenRequests: onOpenRequests,
             onOpenClubs: onOpenClubs,
           ),

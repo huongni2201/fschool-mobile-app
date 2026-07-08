@@ -8,6 +8,9 @@ import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/clubs/data/datasource/clubs_remote_datasource.dart';
 import '../../features/clubs/data/datasource/impl/clubs_remote_datasource_impl.dart';
 import '../../features/clubs/domain/usecases/get_clubs_usecase.dart';
+import '../../features/exams/data/datasource/exams_remote_datasource.dart';
+import '../../features/exams/data/datasource/impl/exams_remote_datasource_impl.dart';
+import '../../features/exams/domain/usecases/get_exam_schedule_usecase.dart';
 import '../../features/grades/data/datasource/grades_remote_datasource.dart';
 import '../../features/grades/data/datasource/impl/grades_remote_datasource_impl.dart';
 import '../../features/grades/domain/usecases/get_grade_periods_usecase.dart';
@@ -16,6 +19,9 @@ import '../../features/grades/domain/usecases/get_subject_grade_detail_usecase.d
 import '../../features/home/data/datasource/home_remote_datasource.dart';
 import '../../features/home/data/datasource/impl/home_remote_datasource_impl.dart';
 import '../../features/home/domain/usecases/get_home_dashboard_usecase.dart';
+import '../../features/notifications/data/datasource/impl/notifications_remote_datasource_impl.dart';
+import '../../features/notifications/data/datasource/notifications_remote_datasource.dart';
+import '../../features/notifications/domain/usecases/get_notifications_usecase.dart';
 import '../../features/profile/data/datasource/profile_remote_datasource.dart';
 import '../../features/profile/data/datasource/impl/profile_remote_datasource_impl.dart';
 import '../../features/profile/domain/usecases/get_student_profile_usecase.dart';
@@ -54,6 +60,18 @@ void setupServiceLocator() {
     getIt.registerLazySingleton<GetHomeDashboardUseCase>(
       () => GetHomeDashboardUseCase(
         remoteDataSource: getIt<HomeRemoteDataSource>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<NotificationsRemoteDataSource>()) {
+    getIt.registerLazySingleton<NotificationsRemoteDataSource>(
+      () => NotificationsRemoteDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<GetNotificationsUseCase>()) {
+    getIt.registerLazySingleton<GetNotificationsUseCase>(
+      () => GetNotificationsUseCase(
+        remoteDataSource: getIt<NotificationsRemoteDataSource>(),
       ),
     );
   }
@@ -96,6 +114,18 @@ void setupServiceLocator() {
   if (!getIt.isRegistered<GetClubsUseCase>()) {
     getIt.registerLazySingleton<GetClubsUseCase>(
       () => GetClubsUseCase(remoteDataSource: getIt<ClubsRemoteDataSource>()),
+    );
+  }
+  if (!getIt.isRegistered<ExamsRemoteDataSource>()) {
+    getIt.registerLazySingleton<ExamsRemoteDataSource>(
+      () => ExamsRemoteDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<GetExamScheduleUseCase>()) {
+    getIt.registerLazySingleton<GetExamScheduleUseCase>(
+      () => GetExamScheduleUseCase(
+        remoteDataSource: getIt<ExamsRemoteDataSource>(),
+      ),
     );
   }
   if (!getIt.isRegistered<GradesRemoteDataSource>()) {

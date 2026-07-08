@@ -4,6 +4,7 @@ class _ShortcutGrid extends StatelessWidget {
   final ValueChanged<String> onTap;
   final VoidCallback onOpenGrades;
   final VoidCallback onOpenTimetable;
+  final VoidCallback onOpenExams;
   final VoidCallback onOpenRequests;
   final VoidCallback onOpenClubs;
 
@@ -11,6 +12,7 @@ class _ShortcutGrid extends StatelessWidget {
     required this.onTap,
     required this.onOpenGrades,
     required this.onOpenTimetable,
+    required this.onOpenExams,
     required this.onOpenRequests,
     required this.onOpenClubs,
   });
@@ -31,7 +33,11 @@ class _ShortcutGrid extends StatelessWidget {
       AppStrings.homeShortcutAttendance,
     ),
     _ShortcutItem(Icons.credit_card_rounded, AppStrings.homeShortcutTuition),
-    _ShortcutItem(Icons.alarm_outlined, AppStrings.homeShortcutExams),
+    _ShortcutItem(
+      Icons.alarm_outlined,
+      AppStrings.homeShortcutExams,
+      opensExams: true,
+    ),
     _ShortcutItem(
       Icons.edit_document,
       AppStrings.homeShortcutRequests,
@@ -65,6 +71,8 @@ class _ShortcutGrid extends StatelessWidget {
               ? onOpenTimetable
               : item.opensGrades
               ? onOpenGrades
+              : item.opensExams
+              ? onOpenExams
               : item.opensRequests
               ? onOpenRequests
               : item.opensClubs
@@ -81,6 +89,7 @@ class _ShortcutItem {
   final String label;
   final bool opensGrades;
   final bool opensTimetable;
+  final bool opensExams;
   final bool opensRequests;
   final bool opensClubs;
 
@@ -89,6 +98,7 @@ class _ShortcutItem {
     this.label, {
     this.opensGrades = false,
     this.opensTimetable = false,
+    this.opensExams = false,
     this.opensRequests = false,
     this.opensClubs = false,
   });
