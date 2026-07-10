@@ -122,8 +122,16 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushNamed(RouterNames.requests);
   }
 
+  void _openTuition() {
+    Navigator.of(context).pushNamed(RouterNames.tuition);
+  }
+
   void _openClubs() {
     Navigator.of(context).pushNamed(RouterNames.clubs);
+  }
+
+  void _openAttendance() {
+    Navigator.of(context).pushNamed(RouterNames.attendance);
   }
 
   @override
@@ -178,7 +186,9 @@ class _HomePageState extends State<HomePage> {
       onOpenExams: _openExamSchedule,
       onOpenNotifications: _openNotifications,
       onOpenRequests: _openRequests,
+      onOpenTuition: _openTuition,
       onOpenClubs: _openClubs,
+      onOpenAttendance: _openAttendance,
     );
   }
 }

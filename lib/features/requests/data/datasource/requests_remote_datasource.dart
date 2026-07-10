@@ -7,4 +7,8 @@ abstract class RequestsRemoteDataSource {
     int page = 1,
     int limit = 20,
   });
+
+  Future<StudentRequestItem> submitStudentRequest(
+    CreateStudentRequestPayload payload,
+  );
 }

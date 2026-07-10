@@ -5,6 +5,9 @@ import '../../features/auth/data/datasource/impl/auth_remote_datasource_impl.dar
 import '../../features/auth/data/repositories/auth_repository.dart';
 import '../../features/auth/data/repositories/impl/auth_repository_impl.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
+import '../../features/auth/domain/usecases/request_password_reset_otp_usecase.dart';
+import '../../features/auth/domain/usecases/reset_password_usecase.dart';
+import '../../features/auth/domain/usecases/verify_password_reset_otp_usecase.dart';
 import '../../features/clubs/data/datasource/clubs_remote_datasource.dart';
 import '../../features/clubs/data/datasource/impl/clubs_remote_datasource_impl.dart';
 import '../../features/clubs/domain/usecases/get_clubs_usecase.dart';
@@ -29,9 +32,13 @@ import '../../features/requests/data/datasource/requests_remote_datasource.dart'
 import '../../features/requests/data/datasource/impl/requests_remote_datasource_impl.dart';
 import '../../features/requests/domain/usecases/get_request_types_usecase.dart';
 import '../../features/requests/domain/usecases/get_student_requests_usecase.dart';
+import '../../features/requests/domain/usecases/submit_student_request_usecase.dart';
 import '../../features/schedule/data/datasource/schedule_remote_datasource.dart';
 import '../../features/schedule/data/datasource/impl/schedule_remote_datasource_impl.dart';
 import '../../features/schedule/domain/usecases/get_weekly_timetable_usecase.dart';
+import '../../features/tuition/data/datasource/impl/tuition_remote_datasource_impl.dart';
+import '../../features/tuition/data/datasource/tuition_remote_datasource.dart';
+import '../../features/tuition/domain/usecases/get_tuition_overview_usecase.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -49,6 +56,21 @@ void setupServiceLocator() {
   if (!getIt.isRegistered<LoginUseCase>()) {
     getIt.registerLazySingleton<LoginUseCase>(
       () => LoginUseCase(repository: getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<RequestPasswordResetOtpUseCase>()) {
+    getIt.registerLazySingleton<RequestPasswordResetOtpUseCase>(
+      () => RequestPasswordResetOtpUseCase(repository: getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<VerifyPasswordResetOtpUseCase>()) {
+    getIt.registerLazySingleton<VerifyPasswordResetOtpUseCase>(
+      () => VerifyPasswordResetOtpUseCase(repository: getIt<AuthRepository>()),
+    );
+  }
+  if (!getIt.isRegistered<ResetPasswordUseCase>()) {
+    getIt.registerLazySingleton<ResetPasswordUseCase>(
+      () => ResetPasswordUseCase(repository: getIt<AuthRepository>()),
     );
   }
   if (!getIt.isRegistered<HomeRemoteDataSource>()) {
@@ -102,6 +124,13 @@ void setupServiceLocator() {
   if (!getIt.isRegistered<GetStudentRequestsUseCase>()) {
     getIt.registerLazySingleton<GetStudentRequestsUseCase>(
       () => GetStudentRequestsUseCase(
+        remoteDataSource: getIt<RequestsRemoteDataSource>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<SubmitStudentRequestUseCase>()) {
+    getIt.registerLazySingleton<SubmitStudentRequestUseCase>(
+      () => SubmitStudentRequestUseCase(
         remoteDataSource: getIt<RequestsRemoteDataSource>(),
       ),
     );
@@ -163,6 +192,18 @@ void setupServiceLocator() {
     getIt.registerLazySingleton<GetWeeklyTimetableUseCase>(
       () => GetWeeklyTimetableUseCase(
         remoteDataSource: getIt<ScheduleRemoteDataSource>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<TuitionRemoteDataSource>()) {
+    getIt.registerLazySingleton<TuitionRemoteDataSource>(
+      () => TuitionRemoteDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<GetTuitionOverviewUseCase>()) {
+    getIt.registerLazySingleton<GetTuitionOverviewUseCase>(
+      () => GetTuitionOverviewUseCase(
+        remoteDataSource: getIt<TuitionRemoteDataSource>(),
       ),
     );
   }

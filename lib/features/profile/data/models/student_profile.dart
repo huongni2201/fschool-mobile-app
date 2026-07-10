@@ -7,6 +7,10 @@ class StudentProfile {
   final String schoolYear;
   final String? email;
   final String? phone;
+  final String? dateOfBirth;
+  final String? gender;
+  final String? address;
+  final List<ParentContact> parents;
 
   const StudentProfile({
     required this.fullName,
@@ -17,6 +21,10 @@ class StudentProfile {
     this.studentCode,
     this.email,
     this.phone,
+    this.dateOfBirth,
+    this.gender,
+    this.address,
+    this.parents = const [],
   });
 
   factory StudentProfile.fromJson(Map<String, dynamic> json) {
@@ -94,6 +102,59 @@ class StudentProfile {
           'Đang cập nhật',
       email: _stringFromKeys(source, const ['email', 'emailAddress']),
       phone: _stringFromKeys(source, const ['phone', 'phoneNumber', 'mobile']),
+      dateOfBirth: _stringFromKeys(source, const [
+        'dateOfBirth',
+        'birthDate',
+        'birthday',
+        'dob',
+      ]),
+      gender: _stringFromKeys(source, const ['gender', 'sex']),
+      address: _stringFromKeys(source, const [
+        'address',
+        'homeAddress',
+        'currentAddress',
+      ]),
+      parents: _parentContacts(source),
+    );
+  }
+}
+
+class ParentContact {
+  final String name;
+  final String relation;
+  final String? phone;
+  final String? email;
+  final String? address;
+
+  const ParentContact({
+    required this.name,
+    required this.relation,
+    this.phone,
+    this.email,
+    this.address,
+  });
+
+  factory ParentContact.fromJson(Map<String, dynamic> json) {
+    return ParentContact(
+      name:
+          _stringFromKeys(json, const [
+            'name',
+            'fullName',
+            'parentName',
+            'guardianName',
+          ]) ??
+          '',
+      relation:
+          _stringFromKeys(json, const [
+            'relation',
+            'relationship',
+            'type',
+            'role',
+          ]) ??
+          '',
+      phone: _stringFromKeys(json, const ['phone', 'phoneNumber', 'mobile']),
+      email: _stringFromKeys(json, const ['email', 'emailAddress']),
+      address: _stringFromKeys(json, const ['address', 'homeAddress']),
     );
   }
 }
@@ -112,6 +173,48 @@ Map<String, dynamic> _firstMap(Map<String, dynamic> source, List<String> keys) {
   }
 
   return const {};
+}
+
+List<ParentContact> _parentContacts(Map<String, dynamic> source) {
+  for (final key in const [
+    'parents',
+    'parentInfo',
+    'guardians',
+    'guardianInfo',
+    'contacts',
+  ]) {
+    final value = source[key];
+
+    if (value is List) {
+      return value
+          .map(_mapFromObject)
+          .where((item) => item.isNotEmpty)
+          .map(ParentContact.fromJson)
+          .where((parent) => parent.name.isNotEmpty)
+          .toList(growable: false);
+    }
+
+    final map = _mapFromObject(value);
+
+    if (map.isNotEmpty) return [ParentContact.fromJson(map)];
+  }
+
+  final father = _firstMap(source, const ['father', 'dad']);
+  final mother = _firstMap(source, const ['mother', 'mom']);
+  final contacts = <ParentContact>[
+    if (father.isNotEmpty)
+      ParentContact.fromJson({
+        ...father,
+        'relation': father['relation'] ?? 'Bố',
+      }),
+    if (mother.isNotEmpty)
+      ParentContact.fromJson({
+        ...mother,
+        'relation': mother['relation'] ?? 'Mẹ',
+      }),
+  ];
+
+  return contacts;
 }
 
 Map<String, dynamic> _mapFromObject(Object? value) {

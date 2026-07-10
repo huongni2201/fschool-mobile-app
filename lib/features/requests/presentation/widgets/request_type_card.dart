@@ -2,8 +2,9 @@ part of '../pages/requests_page.dart';
 
 class _RequestTypeCard extends StatelessWidget {
   final RequestTypeItem requestType;
+  final VoidCallback onTap;
 
-  const _RequestTypeCard({required this.requestType});
+  const _RequestTypeCard({required this.requestType, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class _RequestTypeCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(22),
       child: InkWell(
         borderRadius: BorderRadius.circular(22),
-        onTap: () => _showComingSoon(context),
+        onTap: onTap,
         child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
@@ -105,11 +106,5 @@ class _RequestTypeCard extends StatelessWidget {
     if (normalized.contains('other')) return RequestsColors.requestOther;
 
     return RequestsColors.primary;
-  }
-
-  void _showComingSoon(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text(RequestsStrings.createRequestComingSoon)),
-    );
   }
 }

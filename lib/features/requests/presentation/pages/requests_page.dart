@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/di/service_locator.dart';
+import '../../../../core/router/router_names.dart';
 import '../../../../core/widgets/main_bottom_navigation.dart';
 import '../../data/models/request_display_models.dart';
 import '../../domain/usecases/get_request_types_usecase.dart';
@@ -72,6 +73,16 @@ class _RequestsPageState extends State<RequestsPage> {
     }
   }
 
+  Future<void> _openCreateRequest(RequestTypeItem requestType) async {
+    final created = await Navigator.of(
+      context,
+    ).pushNamed(RouterNames.createRequest, arguments: requestType);
+
+    if (created == true) {
+      await _loadRequests();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +151,10 @@ class _RequestsPageState extends State<RequestsPage> {
     return Column(
       children: [
         for (final requestType in _requestTypes) ...[
-          _RequestTypeCard(requestType: requestType),
+          _RequestTypeCard(
+            requestType: requestType,
+            onTap: () => _openCreateRequest(requestType),
+          ),
           const SizedBox(height: 10),
         ],
       ],

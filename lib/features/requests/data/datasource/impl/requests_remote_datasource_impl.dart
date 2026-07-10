@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
 import 'package:myfschool/features/requests/data/datasource/requests_remote_datasource.dart';
@@ -58,6 +61,103 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
       'studentRequests',
       'data',
     ]).map(StudentRequestItem.fromJson).toList(growable: false);
+  }
+
+  @override
+  Future<StudentRequestItem> submitStudentRequest(
+    CreateStudentRequestPayload payload,
+  ) async {
+    final response = await ApiClient.dio.post(
+      requestsPath,
+      data: payload.hasAttachments
+          ? await _formDataFromPayload(payload)
+          : payload.toJson(),
+      options: payload.hasAttachments
+          ? Options(contentType: Headers.multipartFormDataContentType)
+          : null,
+    );
+    final responseData = _jsonMap(response.data);
+
+    if (responseData.isEmpty) {
+      return StudentRequestItem.fromCreatedPayload(payload);
+    }
+
+    _throwIfFailed(responseData, 'Cannot submit request');
+
+    final requestData = _requestFromResponse(responseData);
+
+    if (requestData.isEmpty) {
+      return StudentRequestItem.fromCreatedPayload(payload);
+    }
+
+    return StudentRequestItem.fromJson(requestData);
+  }
+
+  Future<FormData> _formDataFromPayload(
+    CreateStudentRequestPayload payload,
+  ) async {
+    final fields = <String, dynamic>{};
+
+    for (final entry in payload.toJson().entries) {
+      final value = entry.value;
+
+      fields[entry.key] = value is Map || value is List
+          ? jsonEncode(value)
+          : value;
+    }
+
+    fields['attachments'] = await Future.wait(
+      payload.attachments.map(_multipartFileFromAttachment),
+    );
+
+    return FormData.fromMap(fields);
+  }
+
+  Future<MultipartFile> _multipartFileFromAttachment(
+    RequestAttachmentPayload attachment,
+  ) {
+    final path = attachment.path;
+    final bytes = attachment.bytes;
+
+    if (path != null && path.isNotEmpty) {
+      return MultipartFile.fromFile(path, filename: attachment.name);
+    }
+
+    if (bytes != null) {
+      return Future.value(
+        MultipartFile.fromBytes(bytes, filename: attachment.name),
+      );
+    }
+
+    throw const ParsingException('Attachment file data is missing');
+  }
+
+  Map<String, dynamic> _requestFromResponse(Map<String, dynamic> source) {
+    final payload = _payload(source);
+
+    for (final key in const [
+      'request',
+      'studentRequest',
+      'item',
+      'createdRequest',
+    ]) {
+      final value = _jsonMap(payload[key]);
+
+      if (value.isNotEmpty) return value;
+    }
+
+    if (_looksLikeRequest(payload)) return payload;
+    if (_looksLikeRequest(source)) return source;
+
+    return const {};
+  }
+
+  bool _looksLikeRequest(Map<String, dynamic> source) {
+    return source.containsKey('id') ||
+        source.containsKey('requestId') ||
+        source.containsKey('status') ||
+        source.containsKey('typeCode') ||
+        source.containsKey('requestTypeCode');
   }
 
   List<Map<String, dynamic>> _listFromResponse(

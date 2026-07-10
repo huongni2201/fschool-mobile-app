@@ -2,7 +2,7 @@ part of '../pages/profile_page.dart';
 
 class _ProfileMenuCard extends StatelessWidget {
   final List<_ProfileMenuItem> items;
-  final ValueChanged<String> onTap;
+  final ValueChanged<_ProfileMenuTarget> onTap;
 
   const _ProfileMenuCard({required this.items, required this.onTap});
 
@@ -33,7 +33,7 @@ class _ProfileMenuCard extends StatelessWidget {
 
 class _ProfileMenuTile extends StatelessWidget {
   final _ProfileMenuItem item;
-  final ValueChanged<String> onTap;
+  final ValueChanged<_ProfileMenuTarget> onTap;
 
   const _ProfileMenuTile({required this.item, required this.onTap});
 
@@ -41,7 +41,7 @@ class _ProfileMenuTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(24),
-      onTap: () => onTap(item.title),
+      onTap: () => onTap(item.target),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Row(

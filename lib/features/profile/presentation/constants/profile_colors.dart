@@ -13,6 +13,7 @@ abstract final class ProfileColors {
   static const Color primary = AppColors.homeOrange;
   static const Color primaryDark = AppColors.homeDeepOrange;
   static const Color primaryLight = AppColors.homeOrangeLight;
+  static const Color heroTextMuted = Color(0xCCFFFFFF);
   static const Color danger = Color(0xFFD84315);
   static const Color success = Color(0xFF27AE60);
   static const Color blue = Color(0xFF2F80ED);

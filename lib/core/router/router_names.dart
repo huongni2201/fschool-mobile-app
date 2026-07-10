@@ -7,6 +7,9 @@ abstract final class RouterNames {
   static const String examSchedule = '/exam-schedule';
   static const String notifications = '/notifications';
   static const String requests = '/requests';
+  static const String createRequest = '/requests/create';
+  static const String attendance = '/attendance';
+  static const String tuition = '/tuition';
   static const String profile = '/profile';
   static const String clubs = '/clubs';
 }

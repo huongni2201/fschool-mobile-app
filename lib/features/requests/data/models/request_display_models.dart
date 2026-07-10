@@ -64,6 +64,53 @@ class RequestField {
   }
 }
 
+class CreateStudentRequestPayload {
+  final String requestTypeCode;
+  final String title;
+  final String content;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final Map<String, String> fieldValues;
+  final List<RequestAttachmentPayload> attachments;
+
+  const CreateStudentRequestPayload({
+    required this.requestTypeCode,
+    required this.title,
+    required this.content,
+    required this.startDate,
+    required this.endDate,
+    required this.fieldValues,
+    required this.attachments,
+  });
+
+  bool get hasAttachments => attachments.isNotEmpty;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'requestTypeCode': requestTypeCode,
+      'title': title,
+      'content': content,
+      if (startDate != null) 'startDate': _datePayload(startDate!),
+      if (endDate != null) 'endDate': _datePayload(endDate!),
+      if (fieldValues.isNotEmpty) 'fields': fieldValues,
+    };
+  }
+}
+
+class RequestAttachmentPayload {
+  final String name;
+  final int size;
+  final String? path;
+  final List<int>? bytes;
+
+  const RequestAttachmentPayload({
+    required this.name,
+    required this.size,
+    this.path,
+    this.bytes,
+  });
+}
+
 class StudentRequestItem {
   final String id;
   final String typeCode;
@@ -116,6 +163,21 @@ class StudentRequestItem {
         'date',
       ]),
       updatedAt: _dateFromKeys(json, const ['updatedAt', 'updatedDate']),
+    );
+  }
+
+  factory StudentRequestItem.fromCreatedPayload(
+    CreateStudentRequestPayload payload,
+  ) {
+    return StudentRequestItem(
+      id: '${payload.requestTypeCode}-${DateTime.now().microsecondsSinceEpoch}',
+      typeCode: payload.requestTypeCode,
+      typeName: payload.requestTypeCode,
+      title: payload.title,
+      status: 'submitted',
+      statusLabel: 'Đã gửi',
+      createdAt: DateTime.now(),
+      updatedAt: null,
     );
   }
 
@@ -220,4 +282,8 @@ String _defaultStatusLabel(String status) {
   }
 
   return status.isEmpty ? 'Đang cập nhật' : status;
+}
+
+String _datePayload(DateTime date) {
+  return DateTime(date.year, date.month, date.day).toIso8601String();
 }

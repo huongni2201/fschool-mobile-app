@@ -6,7 +6,9 @@ class _ShortcutGrid extends StatelessWidget {
   final VoidCallback onOpenTimetable;
   final VoidCallback onOpenExams;
   final VoidCallback onOpenRequests;
+  final VoidCallback onOpenTuition;
   final VoidCallback onOpenClubs;
+  final VoidCallback onOpenAttendance;
 
   const _ShortcutGrid({
     required this.onTap,
@@ -14,7 +16,9 @@ class _ShortcutGrid extends StatelessWidget {
     required this.onOpenTimetable,
     required this.onOpenExams,
     required this.onOpenRequests,
+    required this.onOpenTuition,
     required this.onOpenClubs,
+    required this.onOpenAttendance,
   });
 
   static const List<_ShortcutItem> _items = [
@@ -31,8 +35,13 @@ class _ShortcutGrid extends StatelessWidget {
     _ShortcutItem(
       Icons.assignment_turned_in_outlined,
       AppStrings.homeShortcutAttendance,
+      opensAttendance: true,
     ),
-    _ShortcutItem(Icons.credit_card_rounded, AppStrings.homeShortcutTuition),
+    _ShortcutItem(
+      Icons.credit_card_rounded,
+      AppStrings.homeShortcutTuition,
+      opensTuition: true,
+    ),
     _ShortcutItem(
       Icons.alarm_outlined,
       AppStrings.homeShortcutExams,
@@ -75,8 +84,12 @@ class _ShortcutGrid extends StatelessWidget {
               ? onOpenExams
               : item.opensRequests
               ? onOpenRequests
+              : item.opensTuition
+              ? onOpenTuition
               : item.opensClubs
               ? onOpenClubs
+              : item.opensAttendance
+              ? onOpenAttendance
               : () => onTap(item.label),
         );
       },
@@ -91,7 +104,9 @@ class _ShortcutItem {
   final bool opensTimetable;
   final bool opensExams;
   final bool opensRequests;
+  final bool opensTuition;
   final bool opensClubs;
+  final bool opensAttendance;
 
   const _ShortcutItem(
     this.icon,
@@ -100,7 +115,9 @@ class _ShortcutItem {
     this.opensTimetable = false,
     this.opensExams = false,
     this.opensRequests = false,
+    this.opensTuition = false,
     this.opensClubs = false,
+    this.opensAttendance = false,
   });
 }
 

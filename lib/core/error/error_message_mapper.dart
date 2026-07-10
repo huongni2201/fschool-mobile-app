@@ -23,6 +23,33 @@ abstract final class ErrorMessageMapper {
     };
   }
 
+  static String passwordReset(Object error) {
+    return switch (error) {
+      AuthFailure(:final message) => _messageOr(
+        message,
+        AppStrings.resetPasswordFailed,
+      ),
+      NetworkFailure(:final message) => _messageOr(
+        message,
+        AppStrings.connectionError,
+      ),
+      ServerFailure(:final message) => _messageOr(
+        message,
+        AppStrings.serverError,
+      ),
+      ParsingFailure(:final message) => _messageOr(
+        message,
+        AppStrings.resetPasswordFailed,
+      ),
+      Failure(:final message) => _messageOr(
+        message,
+        AppStrings.resetPasswordFailed,
+      ),
+      FormatException() => AppStrings.resetPasswordFailed,
+      _ => AppStrings.resetPasswordFailed,
+    };
+  }
+
   static String _messageOr(String? message, String fallback) {
     final trimmedMessage = message?.trim();
 

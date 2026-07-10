@@ -12,7 +12,9 @@ class _HomeDashboardView extends StatelessWidget {
   final VoidCallback onOpenExams;
   final VoidCallback onOpenNotifications;
   final VoidCallback onOpenRequests;
+  final VoidCallback onOpenTuition;
   final VoidCallback onOpenClubs;
+  final VoidCallback onOpenAttendance;
 
   const _HomeDashboardView({
     super.key,
@@ -27,7 +29,9 @@ class _HomeDashboardView extends StatelessWidget {
     required this.onOpenExams,
     required this.onOpenNotifications,
     required this.onOpenRequests,
+    required this.onOpenTuition,
     required this.onOpenClubs,
+    required this.onOpenAttendance,
   });
 
   @override
@@ -63,7 +67,9 @@ class _HomeDashboardView extends StatelessWidget {
             onOpenTimetable: onOpenTimetable,
             onOpenExams: onOpenExams,
             onOpenRequests: onOpenRequests,
+            onOpenTuition: onOpenTuition,
             onOpenClubs: onOpenClubs,
+            onOpenAttendance: onOpenAttendance,
           ),
           const SizedBox(height: 18),
           _SectionHeader(

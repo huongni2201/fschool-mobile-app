@@ -16,6 +16,13 @@ abstract final class AppStrings {
   static const String phoneInvalid = 'Số điện thoại không hợp lệ';
   static const String passwordRequired = 'Vui lòng nhập mật khẩu';
   static const String passwordTooShort = 'Mật khẩu phải có ít nhất 6 ký tự';
+  static const String otp = 'Mã OTP';
+  static const String otpRequired = 'Vui lòng nhập mã OTP';
+  static const String otpInvalid = 'Mã OTP không hợp lệ';
+  static const String newPassword = 'Mật khẩu mới';
+  static const String confirmPassword = 'Nhập lại mật khẩu';
+  static const String confirmPasswordRequired = 'Vui lòng nhập lại mật khẩu';
+  static const String passwordMismatch = 'Mật khẩu nhập lại không khớp';
 
   static const String loginInvalidCredentials =
       'Số điện thoại hoặc mật khẩu không đúng';
@@ -25,6 +32,8 @@ abstract final class AppStrings {
       'Dữ liệu đăng nhập trả về không hợp lệ';
   static const String loginFailed = 'Đăng nhập thất bại, vui lòng thử lại';
   static const String loginSuccess = 'Đăng nhập thành công';
+  static const String resetPasswordFailed =
+      'Không thể đặt lại mật khẩu. Vui lòng thử lại.';
 
   static const String homeDefaultStudentName = 'Học sinh';
   static const String homeGreeting = 'Xin chào 👋';
@@ -118,11 +127,23 @@ abstract final class AppStrings {
   static const String newPasswordStep = 'Mật khẩu mới';
 
   static const String enterPhoneForOtp = 'Nhập số điện thoại để nhận mã OTP';
+  static const String enterOtpForResetPassword =
+      'Nhập mã OTP đã được gửi tới số điện thoại của bạn';
+  static const String enterNewPasswordForReset =
+      'Tạo mật khẩu mới để hoàn tất quá trình đặt lại mật khẩu';
 
   static const String sendOtp = 'Gửi mã OTP';
+  static const String verifyOtp = 'Xác minh OTP';
+  static const String resendOtp = 'Gửi lại mã';
+  static const String changePhoneNumber = 'Đổi số điện thoại';
+  static const String resetPassword = 'Đặt lại mật khẩu';
   static const String or = 'hoặc';
   static const String rememberPassword = 'Nhớ mật khẩu?';
   static const String backToLogin = 'Quay lại đăng nhập';
+  static const String otpSentSuccess = 'Mã OTP đã được gửi';
+  static const String otpVerifiedSuccess = 'Mã OTP hợp lệ';
+  static const String passwordResetSuccess =
+      'Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.';
 
   static String otpWillBeSent(String phoneNumber) {
     return 'Sẽ gửi mã OTP tới số $phoneNumber';

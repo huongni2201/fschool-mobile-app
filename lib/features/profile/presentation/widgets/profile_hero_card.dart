@@ -77,7 +77,7 @@ class _ProfileHeroCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    color: Color(0xCCFFFFFF),
+                    color: ProfileColors.heroTextMuted,
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                   ),

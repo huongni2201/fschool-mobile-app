@@ -6,6 +6,7 @@ import 'package:myfschool/features/auth/data/repositories/auth_repository.dart';
 import 'package:myfschool/features/auth/domain/entities/auth_user.dart';
 
 import '../../models/login_request.dart';
+import '../../models/password_reset_models.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -32,6 +33,72 @@ class AuthRepositoryImpl implements AuthRepository {
       throw const ParsingFailure();
     } on ParsingException {
       throw const ParsingFailure();
+    } catch (error) {
+      throw UnknownFailure(error.toString());
+    }
+  }
+
+  @override
+  Future<void> requestPasswordResetOtp({required String phoneNumber}) async {
+    try {
+      await remoteDataSource.requestPasswordResetOtp(
+        PasswordResetOtpRequest(phoneNumber: phoneNumber),
+      );
+    } on DioException catch (error) {
+      throw _mapDioException(error);
+    } on FormatException {
+      throw const ParsingFailure();
+    } on ParsingException catch (error) {
+      throw ParsingFailure(error.message);
+    } catch (error) {
+      throw UnknownFailure(error.toString());
+    }
+  }
+
+  @override
+  Future<String?> verifyPasswordResetOtp({
+    required String phoneNumber,
+    required String otp,
+  }) async {
+    try {
+      final verification = await remoteDataSource.verifyPasswordResetOtp(
+        PasswordResetOtpVerificationRequest(phoneNumber: phoneNumber, otp: otp),
+      );
+
+      return verification.resetToken;
+    } on DioException catch (error) {
+      throw _mapDioException(error);
+    } on FormatException {
+      throw const ParsingFailure();
+    } on ParsingException catch (error) {
+      throw ParsingFailure(error.message);
+    } catch (error) {
+      throw UnknownFailure(error.toString());
+    }
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String phoneNumber,
+    required String otp,
+    required String newPassword,
+    String? resetToken,
+  }) async {
+    try {
+      await remoteDataSource.resetPassword(
+        PasswordResetRequest(
+          phoneNumber: phoneNumber,
+          otp: otp,
+          newPassword: newPassword,
+          resetToken: resetToken,
+        ),
+      );
+    } on DioException catch (error) {
+      throw _mapDioException(error);
+    } on FormatException {
+      throw const ParsingFailure();
+    } on ParsingException catch (error) {
+      throw ParsingFailure(error.message);
     } catch (error) {
       throw UnknownFailure(error.toString());
     }

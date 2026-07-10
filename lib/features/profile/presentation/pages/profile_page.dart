@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/router/router_names.dart';
@@ -10,13 +12,23 @@ import '../constants/profile_colors.dart';
 import '../constants/profile_strings.dart';
 
 part '../constants/profile_display_data.dart';
-part '../models/profile_menu_item.dart';
+part '../constants/profile_storage_keys.dart';
+part '../../data/models/profile_menu_item.dart';
+part '../utils/profile_detail_helpers.dart';
+part '../widgets/account_info_page.dart';
+part '../widgets/notification_settings_page.dart';
+part '../widgets/parent_info_page.dart';
+part '../widgets/profile_action_card.dart';
+part '../widgets/profile_detail_shell.dart';
 part '../widgets/profile_error_banner.dart';
 part '../widgets/profile_header.dart';
 part '../widgets/profile_hero_card.dart';
 part '../widgets/profile_logout_button.dart';
 part '../widgets/profile_menu_card.dart';
+part '../widgets/profile_message_card.dart';
 part '../widgets/profile_overview_card.dart';
+part '../widgets/profile_support_page.dart';
+part '../widgets/security_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -81,10 +93,16 @@ class _ProfilePageState extends State<ProfilePage> {
     ).pushNamedAndRemoveUntil(RouterNames.login, (route) => false);
   }
 
-  void _showComingSoon(String featureName) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text(ProfileStrings.featureComingSoon)),
-    );
+  void _openMenuItem(_ProfileMenuTarget target) {
+    final page = switch (target) {
+      _ProfileMenuTarget.account => _AccountInfoPage(profile: _profile),
+      _ProfileMenuTarget.parents => _ParentInfoPage(profile: _profile),
+      _ProfileMenuTarget.notifications => const _NotificationSettingsPage(),
+      _ProfileMenuTarget.security => _SecurityPage(onLogout: _logout),
+      _ProfileMenuTarget.support => _SupportPage(profile: _profile),
+    };
+
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
   }
 
   @override
@@ -118,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 10),
                 _ProfileMenuCard(
                   items: _profileMenuItems,
-                  onTap: _showComingSoon,
+                  onTap: _openMenuItem,
                 ),
                 const SizedBox(height: 20),
                 _sectionTitle(ProfileStrings.settings),

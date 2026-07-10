@@ -16,6 +16,33 @@ abstract final class RequestsStrings {
   static const String noRequestsTitle = 'Chưa có đơn gần đây';
   static const String noRequestsMessage =
       'Các đơn đã gửi sẽ hiển thị tại đây sau khi được tạo.';
+  static const String createPageTitle = 'Tạo đơn';
+  static const String createPageSubtitle = 'Điền thông tin gửi nhà trường';
+  static const String selectedRequestType = 'Loại đơn';
+  static const String requestTitleLabel = 'Tiêu đề';
+  static const String requestTitleHint = 'Nhập tiêu đề đơn';
+  static const String requestContentLabel = 'Nội dung';
+  static const String requestContentHint =
+      'Mô tả ngắn gọn nội dung cần gửi nhà trường';
+  static const String requestDateRangeLabel = 'Thời gian áp dụng';
+  static const String requestDateRangeHint = 'Chọn ngày bắt đầu và kết thúc';
+  static const String requestAttachmentLabel = 'Tệp đính kèm';
+  static const String requestAttachmentHint =
+      'Có thể đính kèm PDF, ảnh hoặc tài liệu liên quan';
+  static const String pickAttachment = 'Chọn tệp';
+  static const String removeAttachment = 'Xóa tệp';
+  static const String submitRequest = 'Gửi đơn';
+  static const String submittingRequest = 'Đang gửi...';
+  static const String submitSuccess = 'Đã gửi đơn';
+  static const String submitFailed = 'Không thể gửi đơn. Vui lòng thử lại.';
+  static const String requiredField = 'Vui lòng nhập thông tin này';
+  static const String requiredDateRange = 'Vui lòng chọn thời gian áp dụng';
+  static const String requiredAttachment = 'Vui lòng đính kèm tệp';
+  static const String attachmentMissingData =
+      'Tệp đã chọn không có dữ liệu để upload';
+  static const String attachmentTooLarge =
+      'Mỗi tệp đính kèm không được vượt quá 10MB';
+  static const String noAttachments = 'Chưa chọn tệp';
 
   static const String absenceRequestTitle = 'Đơn xin nghỉ học';
   static const String absenceRequestDescription =

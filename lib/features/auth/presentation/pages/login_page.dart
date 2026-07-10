@@ -98,10 +98,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
 
-      Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-        RouterNames.home,
-        (route) => false,
-      );
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).pushNamedAndRemoveUntil(RouterNames.home, (route) => false);
     } catch (error) {
       if (!mounted) return;
 
