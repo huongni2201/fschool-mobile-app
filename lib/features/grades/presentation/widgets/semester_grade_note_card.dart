@@ -1,4 +1,4 @@
-﻿part of '../pages/semester_grades_page.dart';
+part of '../pages/semester_grades_page.dart';
 
 class _GradeNoteCard extends StatelessWidget {
   const _GradeNoteCard();
@@ -34,4 +34,3 @@ class _GradeNoteCard extends StatelessWidget {
     );
   }
 }
-

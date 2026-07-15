@@ -41,6 +41,13 @@ class RequestTypeItem {
   }
 }
 
+class CreateRequestPageArgs {
+  final RequestTypeItem requestType;
+  final String? studentId;
+
+  const CreateRequestPageArgs({required this.requestType, this.studentId});
+}
+
 class RequestField {
   final String key;
   final String label;

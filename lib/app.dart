@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'core/auth/user_role_resolver.dart';
 import 'core/router/app_router.dart';
 import 'core/router/router_names.dart';
 import 'core/storage/token_storage.dart';
@@ -14,10 +15,18 @@ class App extends StatelessWidget {
       title: 'FPT Schools',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: TokenStorage.hasAccessToken
-          ? RouterNames.home
-          : RouterNames.login,
+      initialRoute: _initialRoute,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
+  }
+
+  String get _initialRoute {
+    if (!TokenStorage.hasAccessToken) return RouterNames.login;
+
+    return switch (TokenStorage.userRole) {
+      UserRole.teacher => RouterNames.teacherHome,
+      UserRole.parent => RouterNames.parentHome,
+      _ => RouterNames.home,
+    };
   }
 }

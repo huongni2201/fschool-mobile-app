@@ -1,5 +1,6 @@
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
+import 'package:myfschool/core/storage/token_storage.dart';
 import 'package:myfschool/features/tuition/data/datasource/tuition_remote_datasource.dart';
 import 'package:myfschool/features/tuition/data/models/tuition_models.dart';
 
@@ -10,8 +11,10 @@ class TuitionRemoteDataSourceImpl implements TuitionRemoteDataSource {
   );
 
   @override
-  Future<TuitionOverview> getTuitionOverview() async {
-    final response = await ApiClient.dio.get(tuitionPath);
+  Future<TuitionOverview> getTuitionOverview({String? studentId}) async {
+    final response = await ApiClient.dio.get(
+      _pathForStudent(tuitionPath, studentId, 'tuition'),
+    );
     final responseData = _jsonMap(response.data);
 
     if (responseData.isEmpty) {
@@ -21,6 +24,16 @@ class TuitionRemoteDataSourceImpl implements TuitionRemoteDataSource {
     _throwIfFailed(responseData, 'Cannot load tuition overview');
 
     return TuitionOverview.fromJson(responseData);
+  }
+
+  String _pathForStudent(String studentPath, String? studentId, String suffix) {
+    if (!TokenStorage.isParent || studentId == null || studentId.isEmpty) {
+      return studentPath;
+    }
+
+    final encodedStudentId = Uri.encodeComponent(studentId);
+
+    return '/parents/me/students/$encodedStudentId/$suffix';
   }
 
   Map<String, dynamic> _jsonMap(Object? value) {

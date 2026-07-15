@@ -8,7 +8,6 @@ class _ShortcutGrid extends StatelessWidget {
   final VoidCallback onOpenRequests;
   final VoidCallback onOpenTuition;
   final VoidCallback onOpenClubs;
-  final VoidCallback onOpenAttendance;
 
   const _ShortcutGrid({
     required this.onTap,
@@ -18,7 +17,6 @@ class _ShortcutGrid extends StatelessWidget {
     required this.onOpenRequests,
     required this.onOpenTuition,
     required this.onOpenClubs,
-    required this.onOpenAttendance,
   });
 
   static const List<_ShortcutItem> _items = [
@@ -31,11 +29,6 @@ class _ShortcutGrid extends StatelessWidget {
       Icons.bar_chart_rounded,
       AppStrings.homeShortcutScores,
       opensGrades: true,
-    ),
-    _ShortcutItem(
-      Icons.assignment_turned_in_outlined,
-      AppStrings.homeShortcutAttendance,
-      opensAttendance: true,
     ),
     _ShortcutItem(
       Icons.credit_card_rounded,
@@ -88,8 +81,6 @@ class _ShortcutGrid extends StatelessWidget {
               ? onOpenTuition
               : item.opensClubs
               ? onOpenClubs
-              : item.opensAttendance
-              ? onOpenAttendance
               : () => onTap(item.label),
         );
       },
@@ -106,7 +97,6 @@ class _ShortcutItem {
   final bool opensRequests;
   final bool opensTuition;
   final bool opensClubs;
-  final bool opensAttendance;
 
   const _ShortcutItem(
     this.icon,
@@ -117,7 +107,6 @@ class _ShortcutItem {
     this.opensRequests = false,
     this.opensTuition = false,
     this.opensClubs = false,
-    this.opensAttendance = false,
   });
 }
 

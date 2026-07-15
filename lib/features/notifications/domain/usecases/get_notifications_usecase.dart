@@ -6,7 +6,7 @@ class GetNotificationsUseCase {
 
   const GetNotificationsUseCase({required this.remoteDataSource});
 
-  Future<NotificationFeed> call() {
-    return remoteDataSource.getNotifications();
+  Future<NotificationFeed> call({String? studentId}) {
+    return remoteDataSource.getNotifications(studentId: studentId);
   }
 }

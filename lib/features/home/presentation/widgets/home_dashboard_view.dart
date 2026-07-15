@@ -14,7 +14,6 @@ class _HomeDashboardView extends StatelessWidget {
   final VoidCallback onOpenRequests;
   final VoidCallback onOpenTuition;
   final VoidCallback onOpenClubs;
-  final VoidCallback onOpenAttendance;
 
   const _HomeDashboardView({
     super.key,
@@ -31,7 +30,6 @@ class _HomeDashboardView extends StatelessWidget {
     required this.onOpenRequests,
     required this.onOpenTuition,
     required this.onOpenClubs,
-    required this.onOpenAttendance,
   });
 
   @override
@@ -69,15 +67,20 @@ class _HomeDashboardView extends StatelessWidget {
             onOpenRequests: onOpenRequests,
             onOpenTuition: onOpenTuition,
             onOpenClubs: onOpenClubs,
-            onOpenAttendance: onOpenAttendance,
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
+          _HomeStudySnapshot(
+            dashboard: dashboard,
+            onOpenTimetable: onOpenTimetable,
+            onOpenGrades: onOpenGrades,
+          ),
+          const SizedBox(height: 22),
           _SectionHeader(
             title: AppStrings.homeTodaySchedule,
             actionLabel: AppStrings.homeViewWeek,
             onAction: onOpenTimetable,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           schedules.isEmpty
               ? const _EmptyHomeCard(
                   icon: Icons.event_available_outlined,
@@ -85,13 +88,13 @@ class _HomeDashboardView extends StatelessWidget {
                   message: AppStrings.homeNoScheduleMessage,
                 )
               : _ScheduleList(items: schedules),
-          const SizedBox(height: 18),
+          const SizedBox(height: 24),
           _SectionHeader(
             title: AppStrings.homeRecentGrades,
             actionLabel: AppStrings.homeDetail,
             onAction: onOpenGrades,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           grades.isEmpty
               ? const _EmptyHomeCard(
                   icon: Icons.workspace_premium_outlined,

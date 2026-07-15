@@ -16,6 +16,7 @@ part '../widgets/current_lesson_card.dart';
 part '../widgets/grade_grid.dart';
 part '../widgets/home_dashboard_view.dart';
 part '../widgets/home_header.dart';
+part '../widgets/home_study_snapshot.dart';
 part '../widgets/home_section_widgets.dart';
 part '../widgets/home_state_views.dart';
 part '../widgets/schedule_list.dart';
@@ -130,10 +131,6 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pushNamed(RouterNames.clubs);
   }
 
-  void _openAttendance() {
-    Navigator.of(context).pushNamed(RouterNames.attendance);
-  }
-
   @override
   Widget build(BuildContext context) {
     final dashboard = _dashboard;
@@ -188,7 +185,6 @@ class _HomePageState extends State<HomePage> {
       onOpenRequests: _openRequests,
       onOpenTuition: _openTuition,
       onOpenClubs: _openClubs,
-      onOpenAttendance: _openAttendance,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
+import 'package:myfschool/core/storage/token_storage.dart';
 import 'package:myfschool/features/notifications/data/datasource/notifications_remote_datasource.dart';
 import 'package:myfschool/features/notifications/data/models/notification_models.dart';
 
@@ -9,10 +10,14 @@ class NotificationsRemoteDataSourceImpl
     'NOTIFICATIONS_PATH',
     defaultValue: '/students/me/notifications',
   );
+  static const String parentNotificationsPath = String.fromEnvironment(
+    'PARENT_NOTIFICATIONS_PATH',
+    defaultValue: '/parents/me/notifications',
+  );
 
   @override
-  Future<NotificationFeed> getNotifications() async {
-    final response = await ApiClient.dio.get(notificationsPath);
+  Future<NotificationFeed> getNotifications({String? studentId}) async {
+    final response = await ApiClient.dio.get(_pathForRole(studentId));
     final responseData = _jsonMap(response.data);
 
     if (responseData.isEmpty) {
@@ -26,6 +31,20 @@ class NotificationsRemoteDataSourceImpl
     _throwIfFailed(responseData, 'Cannot load notifications');
 
     return NotificationFeed.fromJson(responseData);
+  }
+
+  String _pathForRole(String? studentId) {
+    if (!TokenStorage.isParent) return notificationsPath;
+
+    final normalizedStudentId = studentId?.trim();
+
+    if (normalizedStudentId == null || normalizedStudentId.isEmpty) {
+      return parentNotificationsPath;
+    }
+
+    final encodedStudentId = Uri.encodeComponent(normalizedStudentId);
+
+    return '/parents/me/students/$encodedStudentId/notifications';
   }
 
   Map<String, dynamic> _jsonMap(Object? value) {

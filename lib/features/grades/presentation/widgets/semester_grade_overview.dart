@@ -1,4 +1,4 @@
-﻿part of '../pages/semester_grades_page.dart';
+part of '../pages/semester_grades_page.dart';
 
 class _GradeOverviewCard extends StatelessWidget {
   final double average;
@@ -338,4 +338,3 @@ class _SoftCircle extends StatelessWidget {
     );
   }
 }
-

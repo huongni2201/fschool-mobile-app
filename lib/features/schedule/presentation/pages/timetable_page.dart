@@ -17,7 +17,9 @@ part '../widgets/week_hero_card.dart';
 part '../widgets/week_navigator.dart';
 
 class TimetablePage extends StatefulWidget {
-  const TimetablePage({super.key});
+  final String? studentId;
+
+  const TimetablePage({super.key, this.studentId});
 
   @override
   State<TimetablePage> createState() => _TimetablePageState();
@@ -55,6 +57,7 @@ class _TimetablePageState extends State<TimetablePage> {
     try {
       final week = await _getWeeklyTimetableUseCase(
         weekStart: _selectedWeekStart,
+        studentId: widget.studentId,
       );
 
       if (!mounted) return;

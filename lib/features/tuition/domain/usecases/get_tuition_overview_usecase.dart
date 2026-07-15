@@ -6,7 +6,7 @@ class GetTuitionOverviewUseCase {
 
   const GetTuitionOverviewUseCase({required this.remoteDataSource});
 
-  Future<TuitionOverview> call() {
-    return remoteDataSource.getTuitionOverview();
+  Future<TuitionOverview> call({String? studentId}) {
+    return remoteDataSource.getTuitionOverview(studentId: studentId);
   }
 }

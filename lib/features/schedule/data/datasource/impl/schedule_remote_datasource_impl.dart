@@ -1,5 +1,6 @@
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
+import 'package:myfschool/core/storage/token_storage.dart';
 import 'package:myfschool/features/schedule/data/datasource/schedule_remote_datasource.dart';
 import 'package:myfschool/features/schedule/data/models/timetable_models.dart';
 
@@ -20,11 +21,12 @@ class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
   @override
   Future<TimetableWeek> getWeeklyTimetable({
     required DateTime weekStart,
+    String? studentId,
   }) async {
     final normalizedWeekStart = _dateOnly(weekStart);
     final weekEnd = normalizedWeekStart.add(const Duration(days: 6));
     final response = await ApiClient.dio.get(
-      timetablePath,
+      _pathForStudent(timetablePath, studentId, 'timetable'),
       queryParameters: {
         startDateParam: _formatDate(normalizedWeekStart),
         endDateParam: _formatDate(weekEnd),
@@ -51,6 +53,16 @@ class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
       fallbackWeekStart: normalizedWeekStart,
       fallbackWeekEnd: weekEnd,
     );
+  }
+
+  String _pathForStudent(String studentPath, String? studentId, String suffix) {
+    if (!TokenStorage.isParent || studentId == null || studentId.isEmpty) {
+      return studentPath;
+    }
+
+    final encodedStudentId = Uri.encodeComponent(studentId);
+
+    return '/parents/me/students/$encodedStudentId/$suffix';
   }
 
   Map<String, dynamic> _jsonMap(Object? value) {

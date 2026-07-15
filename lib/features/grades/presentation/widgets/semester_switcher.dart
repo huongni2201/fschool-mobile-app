@@ -1,4 +1,4 @@
-﻿part of '../pages/semester_grades_page.dart';
+part of '../pages/semester_grades_page.dart';
 
 class _SemesterSwitcher extends StatelessWidget {
   final List<SemesterOption> options;
@@ -87,4 +87,3 @@ class _SemesterTab extends StatelessWidget {
     );
   }
 }
-

@@ -1,4 +1,4 @@
-﻿abstract final class SemesterGradeStrings {
+abstract final class SemesterGradeStrings {
   static const String pageTitle = 'Bảng điểm';
   static const String separator = ' · ';
   static const String updating = 'Đang cập nhật';

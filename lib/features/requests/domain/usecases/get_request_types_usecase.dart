@@ -6,7 +6,7 @@ class GetRequestTypesUseCase {
 
   const GetRequestTypesUseCase({required this.remoteDataSource});
 
-  Future<List<RequestTypeItem>> call() {
-    return remoteDataSource.getRequestTypes();
+  Future<List<RequestTypeItem>> call({String? studentId}) {
+    return remoteDataSource.getRequestTypes(studentId: studentId);
   }
 }

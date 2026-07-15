@@ -17,8 +17,13 @@ part '../widgets/selected_request_type_card.dart';
 
 class CreateRequestPage extends StatefulWidget {
   final RequestTypeItem requestType;
+  final String? studentId;
 
-  const CreateRequestPage({super.key, required this.requestType});
+  const CreateRequestPage({
+    super.key,
+    required this.requestType,
+    this.studentId,
+  });
 
   @override
   State<CreateRequestPage> createState() => _CreateRequestPageState();
@@ -158,6 +163,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
               )
               .toList(growable: false),
         ),
+        studentId: widget.studentId,
       );
 
       if (!mounted) return;

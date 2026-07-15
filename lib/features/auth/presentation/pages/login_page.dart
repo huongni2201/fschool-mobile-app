@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myfschool/core/constants/app_strings.dart';
 
+import '../../../../core/auth/user_role_resolver.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -94,14 +95,21 @@ class _LoginPageState extends State<LoginPage> {
       await TokenStorage.saveTokens(
         accessToken: user.accessToken,
         refreshToken: user.refreshToken,
+        userRole: user.userRole,
       );
 
       if (!mounted) return;
 
+      final nextRoute = switch (TokenStorage.userRole) {
+        UserRole.teacher => RouterNames.teacherHome,
+        UserRole.parent => RouterNames.parentHome,
+        _ => RouterNames.home,
+      };
+
       Navigator.of(
         context,
         rootNavigator: true,
-      ).pushNamedAndRemoveUntil(RouterNames.home, (route) => false);
+      ).pushNamedAndRemoveUntil(nextRoute, (route) => false);
     } catch (error) {
       if (!mounted) return;
 

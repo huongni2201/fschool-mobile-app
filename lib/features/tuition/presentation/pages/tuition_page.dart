@@ -21,7 +21,9 @@ part '../widgets/tuition_state_views.dart';
 part '../widgets/tuition_summary_grid.dart';
 
 class TuitionPage extends StatefulWidget {
-  const TuitionPage({super.key});
+  final String? studentId;
+
+  const TuitionPage({super.key, this.studentId});
 
   @override
   State<TuitionPage> createState() => _TuitionPageState();
@@ -51,7 +53,9 @@ class _TuitionPageState extends State<TuitionPage> {
     }
 
     try {
-      final overview = await _getTuitionOverviewUseCase();
+      final overview = await _getTuitionOverviewUseCase(
+        studentId: widget.studentId,
+      );
 
       if (!mounted) return;
 

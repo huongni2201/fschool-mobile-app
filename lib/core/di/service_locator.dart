@@ -25,6 +25,9 @@ import '../../features/home/domain/usecases/get_home_dashboard_usecase.dart';
 import '../../features/notifications/data/datasource/impl/notifications_remote_datasource_impl.dart';
 import '../../features/notifications/data/datasource/notifications_remote_datasource.dart';
 import '../../features/notifications/domain/usecases/get_notifications_usecase.dart';
+import '../../features/parent_home/data/datasource/impl/parent_home_remote_datasource_impl.dart';
+import '../../features/parent_home/data/datasource/parent_home_remote_datasource.dart';
+import '../../features/parent_home/domain/usecases/get_parent_dashboard_usecase.dart';
 import '../../features/profile/data/datasource/profile_remote_datasource.dart';
 import '../../features/profile/data/datasource/impl/profile_remote_datasource_impl.dart';
 import '../../features/profile/domain/usecases/get_student_profile_usecase.dart';
@@ -36,6 +39,9 @@ import '../../features/requests/domain/usecases/submit_student_request_usecase.d
 import '../../features/schedule/data/datasource/schedule_remote_datasource.dart';
 import '../../features/schedule/data/datasource/impl/schedule_remote_datasource_impl.dart';
 import '../../features/schedule/domain/usecases/get_weekly_timetable_usecase.dart';
+import '../../features/teacher_home/data/datasource/impl/teacher_home_remote_datasource_impl.dart';
+import '../../features/teacher_home/data/datasource/teacher_home_remote_datasource.dart';
+import '../../features/teacher_home/domain/usecases/get_teacher_dashboard_usecase.dart';
 import '../../features/tuition/data/datasource/impl/tuition_remote_datasource_impl.dart';
 import '../../features/tuition/data/datasource/tuition_remote_datasource.dart';
 import '../../features/tuition/domain/usecases/get_tuition_overview_usecase.dart';
@@ -94,6 +100,30 @@ void setupServiceLocator() {
     getIt.registerLazySingleton<GetNotificationsUseCase>(
       () => GetNotificationsUseCase(
         remoteDataSource: getIt<NotificationsRemoteDataSource>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<ParentHomeRemoteDataSource>()) {
+    getIt.registerLazySingleton<ParentHomeRemoteDataSource>(
+      () => ParentHomeRemoteDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<GetParentDashboardUseCase>()) {
+    getIt.registerLazySingleton<GetParentDashboardUseCase>(
+      () => GetParentDashboardUseCase(
+        remoteDataSource: getIt<ParentHomeRemoteDataSource>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<TeacherHomeRemoteDataSource>()) {
+    getIt.registerLazySingleton<TeacherHomeRemoteDataSource>(
+      () => TeacherHomeRemoteDataSourceImpl(),
+    );
+  }
+  if (!getIt.isRegistered<GetTeacherDashboardUseCase>()) {
+    getIt.registerLazySingleton<GetTeacherDashboardUseCase>(
+      () => GetTeacherDashboardUseCase(
+        remoteDataSource: getIt<TeacherHomeRemoteDataSource>(),
       ),
     );
   }

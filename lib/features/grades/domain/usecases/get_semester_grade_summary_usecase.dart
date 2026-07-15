@@ -6,7 +6,10 @@ class GetSemesterGradeSummaryUseCase {
 
   const GetSemesterGradeSummaryUseCase({required this.remoteDataSource});
 
-  Future<SemesterGradeSummary> call({required SemesterOption period}) {
-    return remoteDataSource.getSummary(period: period);
+  Future<SemesterGradeSummary> call({
+    required SemesterOption period,
+    String? studentId,
+  }) {
+    return remoteDataSource.getSummary(period: period, studentId: studentId);
   }
 }

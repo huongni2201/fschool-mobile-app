@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
+import 'package:myfschool/core/storage/token_storage.dart';
 import 'package:myfschool/features/requests/data/datasource/requests_remote_datasource.dart';
 import 'package:myfschool/features/requests/data/models/request_display_models.dart';
 
@@ -17,8 +18,10 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
   );
 
   @override
-  Future<List<RequestTypeItem>> getRequestTypes() async {
-    final response = await ApiClient.dio.get(requestTypesPath);
+  Future<List<RequestTypeItem>> getRequestTypes({String? studentId}) async {
+    final response = await ApiClient.dio.get(
+      _pathForStudent(requestTypesPath, studentId, 'request-types'),
+    );
     final responseData = _jsonMap(response.data);
 
     if (responseData.isEmpty && response.data is List) {
@@ -40,9 +43,10 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
   Future<List<StudentRequestItem>> getStudentRequests({
     int page = 1,
     int limit = 20,
+    String? studentId,
   }) async {
     final response = await ApiClient.dio.get(
-      requestsPath,
+      _pathForStudent(requestsPath, studentId, 'requests'),
       queryParameters: {'page': page, 'limit': limit},
     );
     final responseData = _jsonMap(response.data);
@@ -65,10 +69,11 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
 
   @override
   Future<StudentRequestItem> submitStudentRequest(
-    CreateStudentRequestPayload payload,
-  ) async {
+    CreateStudentRequestPayload payload, {
+    String? studentId,
+  }) async {
     final response = await ApiClient.dio.post(
-      requestsPath,
+      _pathForStudent(requestsPath, studentId, 'requests'),
       data: payload.hasAttachments
           ? await _formDataFromPayload(payload)
           : payload.toJson(),
@@ -91,6 +96,16 @@ class RequestsRemoteDataSourceImpl implements RequestsRemoteDataSource {
     }
 
     return StudentRequestItem.fromJson(requestData);
+  }
+
+  String _pathForStudent(String studentPath, String? studentId, String suffix) {
+    if (!TokenStorage.isParent || studentId == null || studentId.isEmpty) {
+      return studentPath;
+    }
+
+    final encodedStudentId = Uri.encodeComponent(studentId);
+
+    return '/parents/me/students/$encodedStudentId/$suffix';
   }
 
   Future<FormData> _formDataFromPayload(

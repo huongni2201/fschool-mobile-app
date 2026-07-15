@@ -19,7 +19,9 @@ part '../widgets/subject_grade_detail_page.dart';
 part '../widgets/subject_grade_card.dart';
 
 class SemesterGradesPage extends StatefulWidget {
-  const SemesterGradesPage({super.key});
+  final String? studentId;
+
+  const SemesterGradesPage({super.key, this.studentId});
 
   @override
   State<SemesterGradesPage> createState() => _SemesterGradesPageState();
@@ -51,7 +53,9 @@ class _SemesterGradesPageState extends State<SemesterGradesPage> {
     });
 
     try {
-      final periods = await _getGradePeriodsUseCase();
+      final periods = await _getGradePeriodsUseCase(
+        studentId: widget.studentId,
+      );
 
       if (!mounted) return;
 
@@ -66,7 +70,10 @@ class _SemesterGradesPageState extends State<SemesterGradesPage> {
       }
 
       final selectedIndex = _selectedSemesterIndex.clamp(0, periods.length - 1);
-      final summary = await _getSummaryUseCase(period: periods[selectedIndex]);
+      final summary = await _getSummaryUseCase(
+        period: periods[selectedIndex],
+        studentId: widget.studentId,
+      );
 
       if (!mounted) return;
 
@@ -97,7 +104,10 @@ class _SemesterGradesPageState extends State<SemesterGradesPage> {
     });
 
     try {
-      final summary = await _getSummaryUseCase(period: period);
+      final summary = await _getSummaryUseCase(
+        period: period,
+        studentId: widget.studentId,
+      );
 
       if (!mounted) return;
 
@@ -176,7 +186,11 @@ class _SemesterGradesPageState extends State<SemesterGradesPage> {
               const _SubjectListHeader(),
               const SizedBox(height: SemesterGradeSizes.spacingLg),
               for (final subject in subjects) ...[
-                _SubjectGradeCard(periodId: semester.key, subject: subject),
+                _SubjectGradeCard(
+                  periodId: semester.key,
+                  subject: subject,
+                  studentId: widget.studentId,
+                ),
                 const SizedBox(height: SemesterGradeSizes.spacingLg),
               ],
               const SizedBox(height: SemesterGradeSizes.spacingXxs),

@@ -84,7 +84,6 @@ abstract final class AppStrings {
       'Home dashboard response must be a JSON object';
   static const String homeShortcutTimetable = 'Thời khóa biểu';
   static const String homeShortcutScores = 'Điểm số';
-  static const String homeShortcutAttendance = 'Điểm danh';
   static const String homeShortcutTuition = 'Học phí';
   static const String homeShortcutHomework = 'Bài tập';
   static const String homeShortcutExams = 'Lịch thi';

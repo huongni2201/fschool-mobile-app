@@ -17,7 +17,9 @@ part '../widgets/requests_hero_card.dart';
 part '../widgets/requests_message_card.dart';
 
 class RequestsPage extends StatefulWidget {
-  const RequestsPage({super.key});
+  final String? studentId;
+
+  const RequestsPage({super.key, this.studentId});
 
   @override
   State<RequestsPage> createState() => _RequestsPageState();
@@ -48,8 +50,13 @@ class _RequestsPageState extends State<RequestsPage> {
     });
 
     try {
-      final requestTypes = await _getRequestTypesUseCase();
-      final recentRequests = await _getStudentRequestsUseCase(limit: 10);
+      final requestTypes = await _getRequestTypesUseCase(
+        studentId: widget.studentId,
+      );
+      final recentRequests = await _getStudentRequestsUseCase(
+        limit: 10,
+        studentId: widget.studentId,
+      );
 
       if (!mounted) return;
 
@@ -74,9 +81,13 @@ class _RequestsPageState extends State<RequestsPage> {
   }
 
   Future<void> _openCreateRequest(RequestTypeItem requestType) async {
-    final created = await Navigator.of(
-      context,
-    ).pushNamed(RouterNames.createRequest, arguments: requestType);
+    final created = await Navigator.of(context).pushNamed(
+      RouterNames.createRequest,
+      arguments: CreateRequestPageArgs(
+        requestType: requestType,
+        studentId: widget.studentId,
+      ),
+    );
 
     if (created == true) {
       await _loadRequests();

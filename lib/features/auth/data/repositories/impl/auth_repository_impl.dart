@@ -26,6 +26,7 @@ class AuthRepositoryImpl implements AuthRepository {
       return AuthUser(
         accessToken: response.accessToken,
         refreshToken: response.refreshToken,
+        userRole: response.userRole,
       );
     } on DioException catch (error) {
       throw _mapDioException(error);

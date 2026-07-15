@@ -6,7 +6,7 @@ class GetGradePeriodsUseCase {
 
   const GetGradePeriodsUseCase({required this.remoteDataSource});
 
-  Future<List<SemesterOption>> call() {
-    return remoteDataSource.getPeriods();
+  Future<List<SemesterOption>> call({String? studentId}) {
+    return remoteDataSource.getPeriods(studentId: studentId);
   }
 }

@@ -3,10 +3,12 @@ part of '../pages/semester_grades_page.dart';
 class _SubjectGradeDetailPage extends StatefulWidget {
   final String periodId;
   final SubjectGrade subject;
+  final String? studentId;
 
   const _SubjectGradeDetailPage({
     required this.periodId,
     required this.subject,
+    required this.studentId,
   });
 
   @override
@@ -40,6 +42,7 @@ class _SubjectGradeDetailPageState extends State<_SubjectGradeDetailPage> {
       final subject = await _getSubjectDetailUseCase(
         periodId: widget.periodId,
         subject: widget.subject,
+        studentId: widget.studentId,
       );
 
       if (!mounted) return;

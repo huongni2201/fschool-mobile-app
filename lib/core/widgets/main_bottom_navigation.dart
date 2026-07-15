@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../auth/user_role_resolver.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../router/router_names.dart';
+import '../storage/token_storage.dart';
 
 enum MainBottomNavTab { home, schedule, notifications, profile, none }
 
@@ -17,6 +19,11 @@ class MainBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
+    final homeRouteName = switch (TokenStorage.userRole) {
+      UserRole.teacher => RouterNames.teacherHome,
+      UserRole.parent => RouterNames.parentHome,
+      _ => RouterNames.home,
+    };
 
     return Container(
       padding: EdgeInsets.fromLTRB(18, 8, 18, 8 + bottomPadding),
@@ -32,7 +39,7 @@ class MainBottomNavigation extends StatelessWidget {
               activeIcon: Icons.home_rounded,
               label: AppStrings.homeNavHome,
               isActive: activeTab == MainBottomNavTab.home,
-              onTap: () => _openRoute(context, RouterNames.home),
+              onTap: () => _openRoute(context, homeRouteName),
             ),
           ),
           Expanded(

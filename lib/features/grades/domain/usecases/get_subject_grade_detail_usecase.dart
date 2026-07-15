@@ -9,10 +9,12 @@ class GetSubjectGradeDetailUseCase {
   Future<SubjectGrade> call({
     required String periodId,
     required SubjectGrade subject,
+    String? studentId,
   }) {
     return remoteDataSource.getSubjectDetail(
       periodId: periodId,
       subject: subject,
+      studentId: studentId,
     );
   }
 }

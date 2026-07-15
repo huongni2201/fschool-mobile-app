@@ -6,7 +6,15 @@ class GetStudentRequestsUseCase {
 
   const GetStudentRequestsUseCase({required this.remoteDataSource});
 
-  Future<List<StudentRequestItem>> call({int page = 1, int limit = 20}) {
-    return remoteDataSource.getStudentRequests(page: page, limit: limit);
+  Future<List<StudentRequestItem>> call({
+    int page = 1,
+    int limit = 20,
+    String? studentId,
+  }) {
+    return remoteDataSource.getStudentRequests(
+      page: page,
+      limit: limit,
+      studentId: studentId,
+    );
   }
 }

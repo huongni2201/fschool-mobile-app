@@ -19,8 +19,13 @@ class _SubjectListHeader extends StatelessWidget {
 class _SubjectGradeCard extends StatelessWidget {
   final String periodId;
   final SubjectGrade subject;
+  final String? studentId;
 
-  const _SubjectGradeCard({required this.periodId, required this.subject});
+  const _SubjectGradeCard({
+    required this.periodId,
+    required this.subject,
+    required this.studentId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +126,11 @@ class _SubjectGradeCard extends StatelessWidget {
   void _openSubjectDetail(BuildContext context, SubjectGrade subject) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) =>
-            _SubjectGradeDetailPage(periodId: periodId, subject: subject),
+        builder: (_) => _SubjectGradeDetailPage(
+          periodId: periodId,
+          subject: subject,
+          studentId: studentId,
+        ),
       ),
     );
   }

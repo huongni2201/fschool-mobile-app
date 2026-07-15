@@ -19,7 +19,9 @@ part '../widgets/notification_state_views.dart';
 enum _NotificationFilter { all, unread }
 
 class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({super.key});
+  final String? studentId;
+
+  const NotificationsPage({super.key, this.studentId});
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -50,7 +52,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     }
 
     try {
-      final feed = await _getNotificationsUseCase();
+      final feed = await _getNotificationsUseCase(studentId: widget.studentId);
 
       if (!mounted) return;
 

@@ -6,7 +6,10 @@ class GetWeeklyTimetableUseCase {
 
   const GetWeeklyTimetableUseCase({required this.remoteDataSource});
 
-  Future<TimetableWeek> call({required DateTime weekStart}) {
-    return remoteDataSource.getWeeklyTimetable(weekStart: weekStart);
+  Future<TimetableWeek> call({required DateTime weekStart, String? studentId}) {
+    return remoteDataSource.getWeeklyTimetable(
+      weekStart: weekStart,
+      studentId: studentId,
+    );
   }
 }

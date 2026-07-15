@@ -1,5 +1,6 @@
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
+import 'package:myfschool/core/storage/token_storage.dart';
 import 'package:myfschool/features/grades/data/datasource/grades_remote_datasource.dart';
 import 'package:myfschool/features/grades/data/models/semester_grade_models.dart';
 
@@ -18,8 +19,10 @@ class GradesRemoteDataSourceImpl implements GradesRemoteDataSource {
   );
 
   @override
-  Future<List<SemesterOption>> getPeriods() async {
-    final response = await ApiClient.dio.get(periodsPath);
+  Future<List<SemesterOption>> getPeriods({String? studentId}) async {
+    final response = await ApiClient.dio.get(
+      _pathForStudent(periodsPath, studentId, 'academic-periods'),
+    );
     final responseData = _jsonMap(response.data);
 
     _throwIfFailed(responseData, 'Cannot load grade periods');
@@ -32,9 +35,10 @@ class GradesRemoteDataSourceImpl implements GradesRemoteDataSource {
   @override
   Future<SemesterGradeSummary> getSummary({
     required SemesterOption period,
+    String? studentId,
   }) async {
     final response = await ApiClient.dio.get(
-      summaryPath,
+      _pathForStudent(summaryPath, studentId, 'grades/summary'),
       queryParameters: {'periodId': period.key},
     );
     final responseData = _jsonMap(response.data);
@@ -52,10 +56,11 @@ class GradesRemoteDataSourceImpl implements GradesRemoteDataSource {
   Future<SubjectGrade> getSubjectDetail({
     required String periodId,
     required SubjectGrade subject,
+    String? studentId,
   }) async {
     final encodedSubjectId = Uri.encodeComponent(subject.subjectId);
     final response = await ApiClient.dio.get(
-      '$subjectDetailPath/$encodedSubjectId',
+      '${_pathForStudent(subjectDetailPath, studentId, 'grades/subjects')}/$encodedSubjectId',
       queryParameters: {'periodId': periodId},
     );
     final responseData = _jsonMap(response.data);
@@ -79,6 +84,16 @@ class GradesRemoteDataSourceImpl implements GradesRemoteDataSource {
           ? subject.scores
           : parsedSubject.scores,
     );
+  }
+
+  String _pathForStudent(String studentPath, String? studentId, String suffix) {
+    if (!TokenStorage.isParent || studentId == null || studentId.isEmpty) {
+      return studentPath;
+    }
+
+    final encodedStudentId = Uri.encodeComponent(studentId);
+
+    return '/parents/me/students/$encodedStudentId/$suffix';
   }
 
   List<Map<String, dynamic>> _listFromResponse(Map<String, dynamic> source) {
