@@ -6,6 +6,7 @@ import '../../../../core/di/service_locator.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/router/router_names.dart';
 import '../../../../core/storage/token_storage.dart';
+import '../../../../core/widgets/main_bottom_navigation.dart';
 import '../../data/models/teacher_dashboard.dart';
 import '../../domain/usecases/get_teacher_dashboard_usecase.dart';
 import '../constants/teacher_home_colors.dart';
@@ -124,6 +125,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: const MainBottomNavigation(
+        activeTab: MainBottomNavTab.home,
       ),
     );
   }

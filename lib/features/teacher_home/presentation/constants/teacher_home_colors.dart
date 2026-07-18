@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/app_colors.dart';
+
 abstract final class TeacherHomeColors {
-  static const Color canvas = Color(0xFFF4F8F6);
-  static const Color ink = Color(0xFF17231E);
-  static const Color muted = Color(0xFF718078);
+  static const Color canvas = AppColors.homeCanvas;
+  static const Color ink = AppColors.homeTextStrong;
+  static const Color muted = AppColors.homeTextMuted;
   static const Color surface = Colors.white;
-  static const Color border = Color(0xFFDDE8E2);
-  static const Color shadow = Color(0x180E5A3F);
-  static const Color primary = Color(0xFF0E8F63);
-  static const Color primaryDark = Color(0xFF075F46);
-  static const Color mint = Color(0xFF51CFA5);
-  static const Color blue = Color(0xFF3478F6);
+  static const Color border = AppColors.homeBorder;
+  static const Color shadow = AppColors.homeCardShadow;
+  static const Color primary = AppColors.homeOrange;
+  static const Color primaryDark = AppColors.homeDeepOrange;
+  static const Color mint = Color(0xFFFFB36B);
+  static const Color blue = Color(0xFFE77A1D);
   static const Color amber = Color(0xFFF7A928);
   static const Color red = Color(0xFFE65A4F);
-  static const Color purple = Color(0xFF7658F5);
+  static const Color purple = Color(0xFFC56A2A);
   static const Color warningBackground = Color(0xFFFFF5EA);
   static const Color warningBorder = Color(0xFFFFD8AF);
 }

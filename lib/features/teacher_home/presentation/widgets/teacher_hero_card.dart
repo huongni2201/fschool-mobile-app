@@ -18,7 +18,7 @@ class _TeacherHeroCard extends StatelessWidget {
         ),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x330E8F63),
+            color: TeacherHomeColors.shadow,
             blurRadius: 30,
             offset: Offset(0, 18),
           ),
