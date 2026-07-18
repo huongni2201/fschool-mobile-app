@@ -134,6 +134,7 @@ class TimetableDay {
   }) {
     final date = _dateOnly(
       _dateFromKeys(json, const ['date', 'day', 'dayDate', 'studyDate']) ??
+          _dateFromWeekday(json, _startOfWeek(fallbackDate)) ??
           fallbackDate ??
           DateTime.now(),
     );
@@ -441,9 +442,16 @@ bool _looksLikeLesson(Map<String, dynamic> source) {
       null;
 }
 
-DateTime? _dateFromWeekday(Map<String, dynamic> source, DateTime weekStart) {
+DateTime? _dateFromWeekday(Map<String, dynamic> source, DateTime? weekStart) {
+  if (weekStart == null) return null;
+
   final rawWeekday =
-      _intFromKeys(source, const ['weekdayIndex', 'weekdayNumber']) ??
+      _intFromKeys(source, const [
+        'dayOfWeek',
+        'weekday',
+        'weekdayIndex',
+        'weekdayNumber',
+      ]) ??
       _weekdayNumberFromString(
         _stringFromKeys(source, const [
           'weekday',
@@ -465,11 +473,22 @@ int? _weekdayNumberFromString(String? value) {
 
   final normalized = value.toLowerCase().trim();
   final parsedNumber = int.tryParse(normalized);
+  final parsedEmbeddedNumber = RegExp(r'\d+').firstMatch(normalized);
 
   if (parsedNumber != null) {
     if (parsedNumber == 8) return DateTime.sunday;
 
     return parsedNumber.clamp(DateTime.monday, DateTime.sunday).toInt();
+  }
+
+  if (parsedEmbeddedNumber != null) {
+    final weekday = int.tryParse(parsedEmbeddedNumber.group(0) ?? '');
+
+    if (weekday != null) {
+      if (weekday == 8) return DateTime.sunday;
+
+      return weekday.clamp(DateTime.monday, DateTime.sunday).toInt();
+    }
   }
 
   if (normalized.contains('mon') || normalized.contains('hai')) {
@@ -672,6 +691,14 @@ DateTime? _dateFromObject(Object? value) {
 
 DateTime _dateOnly(DateTime date) {
   return DateTime(date.year, date.month, date.day);
+}
+
+DateTime? _startOfWeek(DateTime? date) {
+  if (date == null) return null;
+
+  final normalized = _dateOnly(date);
+
+  return normalized.subtract(Duration(days: normalized.weekday - 1));
 }
 
 String _dateKey(DateTime date) {

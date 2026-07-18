@@ -5,7 +5,6 @@ class _ShortcutGrid extends StatelessWidget {
   final VoidCallback onOpenGrades;
   final VoidCallback onOpenTimetable;
   final VoidCallback onOpenExams;
-  final VoidCallback onOpenRequests;
   final VoidCallback onOpenTuition;
   final VoidCallback onOpenClubs;
 
@@ -14,7 +13,6 @@ class _ShortcutGrid extends StatelessWidget {
     required this.onOpenGrades,
     required this.onOpenTimetable,
     required this.onOpenExams,
-    required this.onOpenRequests,
     required this.onOpenTuition,
     required this.onOpenClubs,
   });
@@ -39,11 +37,6 @@ class _ShortcutGrid extends StatelessWidget {
       Icons.alarm_outlined,
       AppStrings.homeShortcutExams,
       opensExams: true,
-    ),
-    _ShortcutItem(
-      Icons.edit_document,
-      AppStrings.homeShortcutRequests,
-      opensRequests: true,
     ),
     _ShortcutItem(
       Icons.diversity_3_rounded,
@@ -75,8 +68,6 @@ class _ShortcutGrid extends StatelessWidget {
               ? onOpenGrades
               : item.opensExams
               ? onOpenExams
-              : item.opensRequests
-              ? onOpenRequests
               : item.opensTuition
               ? onOpenTuition
               : item.opensClubs
@@ -94,7 +85,6 @@ class _ShortcutItem {
   final bool opensGrades;
   final bool opensTimetable;
   final bool opensExams;
-  final bool opensRequests;
   final bool opensTuition;
   final bool opensClubs;
 
@@ -104,7 +94,6 @@ class _ShortcutItem {
     this.opensGrades = false,
     this.opensTimetable = false,
     this.opensExams = false,
-    this.opensRequests = false,
     this.opensTuition = false,
     this.opensClubs = false,
   });

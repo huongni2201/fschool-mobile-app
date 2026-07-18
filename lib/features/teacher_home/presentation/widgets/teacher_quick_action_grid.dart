@@ -2,16 +2,31 @@ part of '../pages/teacher_home_page.dart';
 
 class _TeacherQuickActionGrid extends StatelessWidget {
   final ValueChanged<String> onTap;
+  final VoidCallback onOpenTimetable;
+  final VoidCallback onOpenGrades;
+  final VoidCallback onOpenNotifications;
 
-  const _TeacherQuickActionGrid({required this.onTap});
+  const _TeacherQuickActionGrid({
+    required this.onTap,
+    required this.onOpenTimetable,
+    required this.onOpenGrades,
+    required this.onOpenNotifications,
+  });
 
   @override
   Widget build(BuildContext context) {
     const items = [
       _TeacherQuickActionItem(
-        icon: Icons.edit_square,
-        title: TeacherHomeStrings.manageGrades,
+        icon: Icons.calendar_month_outlined,
+        title: TeacherHomeStrings.teachingTimetable,
         color: TeacherHomeColors.blue,
+        opensTimetable: true,
+      ),
+      _TeacherQuickActionItem(
+        icon: Icons.workspace_premium_outlined,
+        title: TeacherHomeStrings.viewGrades,
+        color: TeacherHomeColors.amber,
+        opensGrades: true,
       ),
       _TeacherQuickActionItem(
         icon: Icons.groups_2_outlined,
@@ -19,14 +34,10 @@ class _TeacherQuickActionGrid extends StatelessWidget {
         color: TeacherHomeColors.primary,
       ),
       _TeacherQuickActionItem(
-        icon: Icons.fact_check_outlined,
-        title: TeacherHomeStrings.reviewApplications,
-        color: TeacherHomeColors.amber,
-      ),
-      _TeacherQuickActionItem(
-        icon: Icons.campaign_outlined,
-        title: TeacherHomeStrings.sendNotification,
+        icon: Icons.notifications_none_rounded,
+        title: TeacherHomeStrings.notifications,
         color: TeacherHomeColors.purple,
+        opensNotifications: true,
       ),
     ];
 
@@ -36,7 +47,13 @@ class _TeacherQuickActionGrid extends StatelessWidget {
           Expanded(
             child: _TeacherQuickActionCard(
               item: items[index],
-              onTap: () => onTap(items[index].title),
+              onTap: items[index].opensTimetable
+                  ? onOpenTimetable
+                  : items[index].opensGrades
+                  ? onOpenGrades
+                  : items[index].opensNotifications
+                  ? onOpenNotifications
+                  : () => onTap(items[index].title),
             ),
           ),
           if (index != items.length - 1) const SizedBox(width: 8),
@@ -50,11 +67,17 @@ class _TeacherQuickActionItem {
   final IconData icon;
   final String title;
   final Color color;
+  final bool opensTimetable;
+  final bool opensGrades;
+  final bool opensNotifications;
 
   const _TeacherQuickActionItem({
     required this.icon,
     required this.title,
     required this.color,
+    this.opensTimetable = false,
+    this.opensGrades = false,
+    this.opensNotifications = false,
   });
 }
 

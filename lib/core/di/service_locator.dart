@@ -40,7 +40,10 @@ import '../../features/schedule/data/datasource/schedule_remote_datasource.dart'
 import '../../features/schedule/data/datasource/impl/schedule_remote_datasource_impl.dart';
 import '../../features/schedule/domain/usecases/get_weekly_timetable_usecase.dart';
 import '../../features/teacher_home/data/datasource/impl/teacher_home_remote_datasource_impl.dart';
+import '../../features/teacher_home/data/datasource/impl/teacher_grades_remote_datasource_impl.dart';
+import '../../features/teacher_home/data/datasource/teacher_grades_remote_datasource.dart';
 import '../../features/teacher_home/data/datasource/teacher_home_remote_datasource.dart';
+import '../../features/teacher_home/domain/usecases/get_teacher_class_students_usecase.dart';
 import '../../features/teacher_home/domain/usecases/get_teacher_dashboard_usecase.dart';
 import '../../features/tuition/data/datasource/impl/tuition_remote_datasource_impl.dart';
 import '../../features/tuition/data/datasource/tuition_remote_datasource.dart';
@@ -120,10 +123,22 @@ void setupServiceLocator() {
       () => TeacherHomeRemoteDataSourceImpl(),
     );
   }
+  if (!getIt.isRegistered<TeacherGradesRemoteDataSource>()) {
+    getIt.registerLazySingleton<TeacherGradesRemoteDataSource>(
+      () => TeacherGradesRemoteDataSourceImpl(),
+    );
+  }
   if (!getIt.isRegistered<GetTeacherDashboardUseCase>()) {
     getIt.registerLazySingleton<GetTeacherDashboardUseCase>(
       () => GetTeacherDashboardUseCase(
         remoteDataSource: getIt<TeacherHomeRemoteDataSource>(),
+      ),
+    );
+  }
+  if (!getIt.isRegistered<GetTeacherClassStudentsUseCase>()) {
+    getIt.registerLazySingleton<GetTeacherClassStudentsUseCase>(
+      () => GetTeacherClassStudentsUseCase(
+        remoteDataSource: getIt<TeacherGradesRemoteDataSource>(),
       ),
     );
   }

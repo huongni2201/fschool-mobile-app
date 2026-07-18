@@ -119,14 +119,15 @@ class _DayChip extends StatelessWidget {
 
 class _SelectedDayHeader extends StatelessWidget {
   final TimetableDay day;
+  final bool isTeacher;
 
-  const _SelectedDayHeader({required this.day});
+  const _SelectedDayHeader({required this.day, required this.isTeacher});
 
   @override
   Widget build(BuildContext context) {
     final lessonLabel = day.lessons.isEmpty
-        ? 'Không có tiết học'
-        : '${day.lessons.length} tiết học';
+        ? 'Không có ${isTeacher ? 'tiết dạy' : 'tiết học'}'
+        : '${day.lessons.length} ${isTeacher ? 'tiết dạy' : 'tiết học'}';
 
     return Row(
       children: [

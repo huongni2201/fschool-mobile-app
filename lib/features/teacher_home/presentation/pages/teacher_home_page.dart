@@ -104,6 +104,18 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     );
   }
 
+  void _openTimetable() {
+    Navigator.of(context).pushNamed(RouterNames.timetable);
+  }
+
+  void _openGrades() {
+    Navigator.of(context).pushNamed(RouterNames.teacherGrades);
+  }
+
+  void _openNotifications() {
+    Navigator.of(context).pushNamed(RouterNames.notifications);
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboard = _dashboard;
@@ -155,6 +167,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
           : _teacherHomeErrorMessage(_error),
       onRetryRefresh: () => _loadDashboard(silent: true),
       onLogout: _logout,
+      onOpenTimetable: _openTimetable,
+      onOpenGrades: _openGrades,
+      onOpenNotifications: _openNotifications,
       onShowComingSoon: _showComingSoon,
     );
   }

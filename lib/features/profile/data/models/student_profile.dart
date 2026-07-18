@@ -32,6 +32,11 @@ class StudentProfile {
     final student = _firstMap(payload, const [
       'student',
       'studentInfo',
+      'teacher',
+      'teacherInfo',
+      'teacherProfile',
+      'staff',
+      'staffInfo',
       'profile',
       'user',
       'account',
@@ -57,6 +62,7 @@ class StudentProfile {
           'fullName',
           'name',
           'studentName',
+          'teacherName',
           'displayName',
         ]) ??
         'Học sinh';
@@ -68,16 +74,29 @@ class StudentProfile {
           _avatarText(fullName),
       studentCode: _stringFromKeys(source, const [
         'studentCode',
+        'teacherCode',
+        'employeeCode',
+        'staffCode',
         'code',
         'studentId',
+        'teacherId',
+        'employeeId',
       ]),
       className:
           _stringFromKeys(source, const [
             'className',
             'class',
             'homeroomClass',
+            'departmentName',
+            'department',
+            'faculty',
           ]) ??
-          _stringFromKeys(classSource, const ['name', 'title', 'className']) ??
+          _stringFromKeys(classSource, const [
+            'name',
+            'title',
+            'className',
+            'departmentName',
+          ]) ??
           'Đang cập nhật',
       campus:
           _stringFromKeys(source, const [
@@ -97,6 +116,10 @@ class StudentProfile {
             'schoolYear',
             'academicYear',
             'year',
+            'roleLabel',
+            'role',
+            'position',
+            'title',
           ]) ??
           _stringFromKeys(schoolYearSource, const ['name', 'title', 'label']) ??
           'Đang cập nhật',

@@ -4,6 +4,8 @@ abstract final class RouterNames {
   static const String home = '/home';
   static const String parentHome = '/parent-home';
   static const String teacherHome = '/teacher-home';
+  static const String teacherGrades = '/teacher-grades';
+  static const String teacherClassStudents = '/teacher-grades/class-students';
   static const String semesterGrades = '/semester-grades';
   static const String timetable = '/timetable';
   static const String examSchedule = '/exam-schedule';

@@ -6,6 +6,9 @@ class _TeacherDashboardView extends StatelessWidget {
   final String? refreshErrorMessage;
   final VoidCallback onRetryRefresh;
   final VoidCallback onLogout;
+  final VoidCallback onOpenTimetable;
+  final VoidCallback onOpenGrades;
+  final VoidCallback onOpenNotifications;
   final ValueChanged<String> onShowComingSoon;
 
   const _TeacherDashboardView({
@@ -15,6 +18,9 @@ class _TeacherDashboardView extends StatelessWidget {
     required this.refreshErrorMessage,
     required this.onRetryRefresh,
     required this.onLogout,
+    required this.onOpenTimetable,
+    required this.onOpenGrades,
+    required this.onOpenNotifications,
     required this.onShowComingSoon,
   });
 
@@ -27,8 +33,7 @@ class _TeacherDashboardView extends StatelessWidget {
         _TeacherHeader(
           teacher: dashboard.teacher,
           onLogout: onLogout,
-          onNotificationTap: () =>
-              onShowComingSoon(TeacherHomeStrings.notificationsTitle),
+          onNotificationTap: onOpenNotifications,
         ),
         if (hasRefreshError) ...[
           const SizedBox(height: 14),
@@ -44,17 +49,18 @@ class _TeacherDashboardView extends StatelessWidget {
           title: TeacherHomeStrings.quickSectionTitle,
         ),
         const SizedBox(height: 10),
-        _TeacherQuickActionGrid(onTap: onShowComingSoon),
+        _TeacherQuickActionGrid(
+          onTap: onShowComingSoon,
+          onOpenTimetable: onOpenTimetable,
+          onOpenGrades: onOpenGrades,
+          onOpenNotifications: onOpenNotifications,
+        ),
         const SizedBox(height: 22),
         _TeacherTodayClassesCard(items: dashboard.todayClasses),
         const SizedBox(height: 18),
         _TeacherClassScopeCard(dashboard: dashboard),
         const SizedBox(height: 18),
-        _TeacherTasksCard(
-          pendingApplications: dashboard.pendingApplications,
-          tasks: dashboard.tasks,
-          onTap: onShowComingSoon,
-        ),
+        _TeacherTasksCard(tasks: dashboard.tasks, onTap: onShowComingSoon),
         const SizedBox(height: 18),
         _TeacherExamsCard(items: dashboard.upcomingExams),
         const SizedBox(height: 18),

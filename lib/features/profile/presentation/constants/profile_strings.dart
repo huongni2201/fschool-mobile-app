@@ -2,9 +2,13 @@ abstract final class ProfileStrings {
   static const String pageTitle = 'Cá nhân';
   static const String pageSubtitle = 'Thông tin tài khoản học sinh';
   static const String defaultStudentName = 'Học sinh';
+  static const String defaultTeacherName = 'Giáo viên';
   static const String defaultAvatar = 'HS';
+  static const String defaultTeacherAvatar = 'GV';
   static const String studentCodeFallback = 'Đang cập nhật mã học sinh';
+  static const String teacherCodeFallback = 'Đang cập nhật mã giáo viên';
   static const String studentCodePrefix = 'Mã học sinh';
+  static const String teacherCodePrefix = 'Mã giáo viên';
   static const String accountOverview = 'Tổng quan tài khoản';
   static const String information = 'Thông tin';
   static const String settings = 'Cài đặt';
@@ -13,8 +17,10 @@ abstract final class ProfileStrings {
   static const String loadFailed = 'Không thể tải thông tin cá nhân';
 
   static const String classLabel = 'Lớp';
+  static const String departmentLabel = 'Bộ môn';
   static const String campusLabel = 'Cơ sở';
   static const String schoolYearLabel = 'Năm học';
+  static const String roleLabel = 'Vai trò';
   static const String updating = 'Đang cập nhật';
   static const String currentSchoolYear = '2025 - 2026';
 
@@ -44,6 +50,7 @@ abstract final class ProfileStrings {
 
   static const String fullNameLabel = 'Họ tên';
   static const String studentCodeLabel = 'Mã học sinh';
+  static const String teacherCodeLabel = 'Mã giáo viên';
   static const String phoneLabel = 'Số điện thoại';
   static const String emailLabel = 'Email';
   static const String dateOfBirthLabel = 'Ngày sinh';

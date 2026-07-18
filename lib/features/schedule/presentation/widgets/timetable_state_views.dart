@@ -2,8 +2,9 @@ part of '../pages/timetable_page.dart';
 
 class _EmptyLessonsCard extends StatelessWidget {
   final TimetableDay day;
+  final bool isTeacher;
 
-  const _EmptyLessonsCard({required this.day});
+  const _EmptyLessonsCard({required this.day, required this.isTeacher});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,8 @@ class _EmptyLessonsCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Không có lịch học',
+          Text(
+            isTeacher ? 'Không có lịch dạy' : 'Không có lịch học',
             style: TextStyle(
               color: AppColors.homeTextStrong,
               fontSize: 18,
@@ -41,9 +42,9 @@ class _EmptyLessonsCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '${day.label} chưa có tiết học. Kéo xuống để làm mới khi nhà trường cập nhật lịch.',
+            '${day.label} chưa có ${isTeacher ? 'tiết dạy' : 'tiết học'}. Kéo xuống để làm mới khi nhà trường cập nhật lịch.',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.homeTextMuted,
               fontSize: 13,
               fontWeight: FontWeight.w700,

@@ -7,6 +7,8 @@ class _AccountInfoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTeacher = TokenStorage.isTeacher;
+
     return _ProfileDetailShell(
       title: ProfileStrings.accountInfoTitle,
       subtitle: ProfileStrings.accountDetailSubtitle,
@@ -21,12 +23,16 @@ class _AccountInfoPage extends StatelessWidget {
             ),
             _InfoRow(
               icon: Icons.confirmation_number_outlined,
-              label: ProfileStrings.studentCodeLabel,
+              label: isTeacher
+                  ? ProfileStrings.teacherCodeLabel
+                  : ProfileStrings.studentCodeLabel,
               value: _profileValue(profile?.studentCode),
             ),
             _InfoRow(
               icon: Icons.groups_2_outlined,
-              label: ProfileStrings.classLabel,
+              label: isTeacher
+                  ? ProfileStrings.departmentLabel
+                  : ProfileStrings.classLabel,
               value: _profileValue(profile?.className),
             ),
             _InfoRow(
@@ -36,7 +42,9 @@ class _AccountInfoPage extends StatelessWidget {
             ),
             _InfoRow(
               icon: Icons.calendar_month_outlined,
-              label: ProfileStrings.schoolYearLabel,
+              label: isTeacher
+                  ? ProfileStrings.roleLabel
+                  : ProfileStrings.schoolYearLabel,
               value: _profileValue(profile?.schoolYear),
             ),
             _InfoRow(

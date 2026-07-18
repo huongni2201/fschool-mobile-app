@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../../../core/storage/token_storage.dart';
 import '../../../../core/widgets/main_bottom_navigation.dart';
 import '../../data/models/request_display_models.dart';
 import '../../domain/usecases/submit_student_request_usecase.dart';
@@ -27,6 +28,39 @@ class CreateRequestPage extends StatefulWidget {
 
   @override
   State<CreateRequestPage> createState() => _CreateRequestPageState();
+}
+
+class _ParentOnlyRequestCard extends StatelessWidget {
+  const _ParentOnlyRequestCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: RequestsColors.surface,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: RequestsColors.border),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.lock_outline_rounded, color: RequestsColors.primary),
+          SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              RequestsStrings.parentOnlyMessage,
+              style: TextStyle(
+                color: RequestsColors.textStrong,
+                fontSize: 13,
+                fontWeight: FontWeight.w800,
+                height: 1.35,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _CreateRequestPageState extends State<CreateRequestPage> {
@@ -91,7 +125,7 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
 
   Future<void> _pickAttachments() async {
     try {
-      final result = await FilePicker.platform.pickFiles(
+      final result = await FilePicker.pickFiles(
         allowMultiple: true,
         type: FileType.custom,
         allowedExtensions: const ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'],
@@ -120,6 +154,11 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
   }
 
   Future<void> _submitRequest() async {
+    if (!TokenStorage.isParent) {
+      _showSnackBar(RequestsStrings.parentOnlyMessage);
+      return;
+    }
+
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) return;
@@ -223,6 +262,10 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
               ),
               const SizedBox(height: 18),
               _SelectedRequestTypeCard(requestType: widget.requestType),
+              if (!TokenStorage.isParent) ...[
+                const SizedBox(height: 16),
+                const _ParentOnlyRequestCard(),
+              ],
               const SizedBox(height: 18),
               _buildTextField(
                 controller: _titleController,
@@ -412,7 +455,9 @@ class _CreateRequestPageState extends State<CreateRequestPage> {
     return SizedBox(
       height: 52,
       child: FilledButton(
-        onPressed: _isSubmitting ? null : _submitRequest,
+        onPressed: _isSubmitting || !TokenStorage.isParent
+            ? null
+            : _submitRequest,
         style: FilledButton.styleFrom(
           backgroundColor: RequestsColors.primary,
           foregroundColor: RequestsColors.surface,

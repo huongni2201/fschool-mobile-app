@@ -8,9 +8,24 @@ class _ProfileHeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final studentName = profile?.fullName ?? ProfileStrings.defaultStudentName;
-    final avatarText = profile?.avatarText ?? ProfileStrings.defaultAvatar;
-    final studentCode = profile?.studentCode;
+    final isTeacher = TokenStorage.isTeacher;
+    final profileName =
+        profile?.fullName ??
+        (isTeacher
+            ? ProfileStrings.defaultTeacherName
+            : ProfileStrings.defaultStudentName);
+    final avatarText =
+        profile?.avatarText ??
+        (isTeacher
+            ? ProfileStrings.defaultTeacherAvatar
+            : ProfileStrings.defaultAvatar);
+    final profileCode = profile?.studentCode;
+    final codeFallback = isTeacher
+        ? ProfileStrings.teacherCodeFallback
+        : ProfileStrings.studentCodeFallback;
+    final codePrefix = isTeacher
+        ? ProfileStrings.teacherCodePrefix
+        : ProfileStrings.studentCodePrefix;
 
     return Container(
       width: double.infinity,
@@ -59,7 +74,7 @@ class _ProfileHeroCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  studentName,
+                  profileName,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -71,9 +86,9 @@ class _ProfileHeroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  studentCode == null
-                      ? ProfileStrings.studentCodeFallback
-                      : '${ProfileStrings.studentCodePrefix}: $studentCode',
+                  profileCode == null
+                      ? codeFallback
+                      : '$codePrefix: $profileCode',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

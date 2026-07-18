@@ -87,6 +87,16 @@ class GradesRemoteDataSourceImpl implements GradesRemoteDataSource {
   }
 
   String _pathForStudent(String studentPath, String? studentId, String suffix) {
+    final normalizedStudentId = studentId?.trim();
+
+    if (TokenStorage.isTeacher &&
+        normalizedStudentId != null &&
+        normalizedStudentId.isNotEmpty) {
+      final encodedStudentId = Uri.encodeComponent(normalizedStudentId);
+
+      return '/teachers/me/students/$encodedStudentId/$suffix';
+    }
+
     if (!TokenStorage.isParent || studentId == null || studentId.isEmpty) {
       return studentPath;
     }

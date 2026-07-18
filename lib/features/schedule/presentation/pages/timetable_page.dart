@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/di/service_locator.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../../../core/storage/token_storage.dart';
 import '../../../../core/widgets/main_bottom_navigation.dart';
 import '../../data/models/timetable_models.dart';
 import '../../domain/usecases/get_weekly_timetable_usecase.dart';
@@ -128,7 +129,10 @@ class _TimetablePageState extends State<TimetablePage> {
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(20, 14, 20, 28),
             children: [
-              _TimetableTopBar(onBack: () => Navigator.of(context).maybePop()),
+              _TimetableTopBar(
+                isTeacher: TokenStorage.isTeacher,
+                onBack: () => Navigator.of(context).maybePop(),
+              ),
               const SizedBox(height: 16),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 220),
@@ -163,7 +167,7 @@ class _TimetablePageState extends State<TimetablePage> {
       key: const ValueKey('schedule-content'),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _WeekHeroCard(week: week),
+        _WeekHeroCard(week: week, isTeacher: TokenStorage.isTeacher),
         if (_error != null) ...[
           const SizedBox(height: 12),
           _InlineScheduleWarning(
@@ -184,13 +188,16 @@ class _TimetablePageState extends State<TimetablePage> {
           onSelected: _selectDay,
         ),
         const SizedBox(height: 20),
-        _SelectedDayHeader(day: selectedDay),
+        _SelectedDayHeader(day: selectedDay, isTeacher: TokenStorage.isTeacher),
         const SizedBox(height: 12),
         if (selectedDay.lessons.isEmpty)
-          _EmptyLessonsCard(day: selectedDay)
+          _EmptyLessonsCard(day: selectedDay, isTeacher: TokenStorage.isTeacher)
         else
           for (var index = 0; index < selectedDay.lessons.length; index++) ...[
-            _LessonTimelineCard(lesson: selectedDay.lessons[index]),
+            _LessonTimelineCard(
+              lesson: selectedDay.lessons[index],
+              isTeacher: TokenStorage.isTeacher,
+            ),
             if (index != selectedDay.lessons.length - 1)
               const SizedBox(height: 12),
           ],

@@ -7,6 +7,8 @@ class _ProfileOverviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTeacher = TokenStorage.isTeacher;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
@@ -20,7 +22,9 @@ class _ProfileOverviewCard extends StatelessWidget {
           Expanded(
             child: _ProfileStatTile(
               icon: Icons.groups_2_outlined,
-              label: ProfileStrings.classLabel,
+              label: isTeacher
+                  ? ProfileStrings.departmentLabel
+                  : ProfileStrings.classLabel,
               value: profile?.className ?? ProfileStrings.updating,
             ),
           ),
@@ -36,7 +40,9 @@ class _ProfileOverviewCard extends StatelessWidget {
           Expanded(
             child: _ProfileStatTile(
               icon: Icons.calendar_month_outlined,
-              label: ProfileStrings.schoolYearLabel,
+              label: isTeacher
+                  ? ProfileStrings.roleLabel
+                  : ProfileStrings.schoolYearLabel,
               value: profile?.schoolYear ?? ProfileStrings.updating,
             ),
           ),

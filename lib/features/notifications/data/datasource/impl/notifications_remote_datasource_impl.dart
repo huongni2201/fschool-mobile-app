@@ -14,6 +14,10 @@ class NotificationsRemoteDataSourceImpl
     'PARENT_NOTIFICATIONS_PATH',
     defaultValue: '/parents/me/notifications',
   );
+  static const String teacherNotificationsPath = String.fromEnvironment(
+    'TEACHER_NOTIFICATIONS_PATH',
+    defaultValue: '/teachers/me/notifications',
+  );
 
   @override
   Future<NotificationFeed> getNotifications({String? studentId}) async {
@@ -34,6 +38,8 @@ class NotificationsRemoteDataSourceImpl
   }
 
   String _pathForRole(String? studentId) {
+    if (TokenStorage.isTeacher) return teacherNotificationsPath;
+
     if (!TokenStorage.isParent) return notificationsPath;
 
     final normalizedStudentId = studentId?.trim();

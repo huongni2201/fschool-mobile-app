@@ -1,17 +1,16 @@
 abstract final class TeacherHomeStrings {
   static const String greetingFallback = 'Xin chào giáo viên';
-  static const String subtitle = 'Quản lý lớp học, điểm số và đơn từ';
+  static const String subtitle = 'Quản lý lớp học và lịch dạy';
   static const String dashboardTitle = 'Bảng điều phối giáo viên';
   static const String dashboardSubtitle =
       'Tập trung các việc cần xử lý trong ngày';
   static const String todayClasses = 'Tiết dạy hôm nay';
   static const String managedClasses = 'Lớp phụ trách';
-  static const String pendingApplications = 'Đơn chờ';
   static const String quickSectionTitle = 'Nghiệp vụ nhanh';
-  static const String manageGrades = 'Nhập điểm';
+  static const String teachingTimetable = 'Thời khóa biểu';
+  static const String viewGrades = 'Xem điểm';
+  static const String notifications = 'Thông báo';
   static const String classList = 'Danh sách lớp';
-  static const String reviewApplications = 'Duyệt đơn';
-  static const String sendNotification = 'Gửi thông báo';
   static const String homeroomTitle = 'Lớp chủ nhiệm';
   static const String teachingScopeTitle = 'Phạm vi giảng dạy';
   static const String tasksTitle = 'Đầu việc cần xử lý';
@@ -25,10 +24,24 @@ abstract final class TeacherHomeStrings {
       'Các lớp theo teaching assignment sẽ hiển thị tại đây.';
   static const String noTasksTitle = 'Không có đầu việc mới';
   static const String noTasksMessage =
-      'Các đơn chờ xử lý hoặc việc cần duyệt sẽ xuất hiện ở khu vực này.';
+      'Các đầu việc cần xử lý sẽ xuất hiện ở khu vực này.';
   static const String noNotificationsTitle = 'Chưa có thông báo mới';
   static const String noNotificationsMessage =
       'Thông báo từ nhà trường hoặc lớp phụ trách sẽ hiển thị tại đây.';
+  static const String gradeClassesTitle = 'Xem điểm';
+  static const String gradeClassesSubtitle =
+      'Chọn lớp giáo viên đang giảng dạy';
+  static const String gradeClassesSection = 'Lớp giảng dạy';
+  static const String classStudentsTitle = 'Danh sách lớp';
+  static const String classStudentsSubtitle =
+      'Chọn học sinh để xem điểm chi tiết';
+  static const String classStudentsSection = 'Học sinh trong lớp';
+  static const String noClassIdTitle = 'Chưa có mã lớp';
+  static const String noClassIdMessage =
+      'Không thể tải danh sách học sinh khi dữ liệu lớp chưa có mã định danh.';
+  static const String noStudentsTitle = 'Chưa có học sinh';
+  static const String noStudentsMessage =
+      'Danh sách học sinh sẽ hiển thị khi nhà trường cập nhật dữ liệu lớp.';
   static const String noExamsTitle = 'Chưa có lịch thi liên quan';
   static const String noExamsMessage =
       'Các lịch thi theo lớp hoặc môn được phân công sẽ hiển thị tại đây.';

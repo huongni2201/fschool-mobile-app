@@ -2,8 +2,9 @@ part of '../pages/timetable_page.dart';
 
 class _WeekHeroCard extends StatelessWidget {
   final TimetableWeek week;
+  final bool isTeacher;
 
-  const _WeekHeroCard({required this.week});
+  const _WeekHeroCard({required this.week, required this.isTeacher});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class _WeekHeroCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${week.totalLessons} tiết học trong tuần',
+                            '${week.totalLessons} ${isTeacher ? 'tiết dạy' : 'tiết học'} trong tuần',
                             style: TextStyle(
                               color: Colors.white.withValues(alpha: 0.78),
                               fontSize: 13,

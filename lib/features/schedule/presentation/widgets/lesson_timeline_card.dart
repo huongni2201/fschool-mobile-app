@@ -2,12 +2,14 @@ part of '../pages/timetable_page.dart';
 
 class _LessonTimelineCard extends StatelessWidget {
   final TimetableLesson lesson;
+  final bool isTeacher;
 
-  const _LessonTimelineCard({required this.lesson});
+  const _LessonTimelineCard({required this.lesson, required this.isTeacher});
 
   @override
   Widget build(BuildContext context) {
     final accent = _statusColor(lesson.status);
+    final statusLabel = _statusLabel(lesson);
 
     return Container(
       width: double.infinity,
@@ -56,9 +58,9 @@ class _LessonTimelineCard extends StatelessWidget {
                   ),
                 ),
               ),
-              if (lesson.statusLabel.isNotEmpty) ...[
+              if (statusLabel.isNotEmpty) ...[
                 const SizedBox(width: 10),
-                _StatusBadge(label: lesson.statusLabel, color: accent),
+                _StatusBadge(label: statusLabel, color: accent),
               ],
             ],
           ),
@@ -104,6 +106,17 @@ class _LessonTimelineCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _statusLabel(TimetableLesson lesson) {
+    if (!isTeacher) return lesson.statusLabel;
+
+    return switch (lesson.status) {
+      TimetableLessonStatus.done => 'Đã dạy',
+      TimetableLessonStatus.live => 'Đang dạy',
+      TimetableLessonStatus.next => 'Sắp dạy',
+      TimetableLessonStatus.normal => lesson.statusLabel,
+    };
   }
 }
 

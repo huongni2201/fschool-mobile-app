@@ -97,13 +97,6 @@ class _TeacherHeroCard extends StatelessWidget {
                       value: dashboard.classCount.toString(),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _HeroMetric(
-                      label: TeacherHomeStrings.pendingApplications,
-                      value: dashboard.pendingApplications.toString(),
-                    ),
-                  ),
                 ],
               ),
             ],

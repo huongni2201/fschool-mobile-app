@@ -1,5 +1,6 @@
 import 'package:myfschool/core/error/exceptions.dart';
 import 'package:myfschool/core/network/api_client.dart';
+import 'package:myfschool/core/storage/token_storage.dart';
 import 'package:myfschool/features/profile/data/datasource/profile_remote_datasource.dart';
 import 'package:myfschool/features/profile/data/models/student_profile.dart';
 
@@ -8,10 +9,16 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     'PROFILE_PATH',
     defaultValue: '/students/me/profile',
   );
+  static const String teacherProfilePath = String.fromEnvironment(
+    'TEACHER_PROFILE_PATH',
+    defaultValue: '/teachers/me/profile',
+  );
 
   @override
   Future<StudentProfile> getProfile() async {
-    final response = await ApiClient.dio.get(profilePath);
+    await TokenStorage.loadTokens();
+
+    final response = await ApiClient.dio.get(_profilePathForRole());
     final responseData = _jsonMap(response.data);
 
     if (responseData.isEmpty) {
@@ -21,6 +28,12 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     _throwIfFailed(responseData, 'Cannot load profile');
 
     return StudentProfile.fromJson(responseData);
+  }
+
+  String _profilePathForRole() {
+    if (TokenStorage.isTeacher) return teacherProfilePath;
+
+    return profilePath;
   }
 
   Map<String, dynamic> _jsonMap(Object? value) {

@@ -1,28 +1,17 @@
 part of '../pages/teacher_home_page.dart';
 
 class _TeacherTasksCard extends StatelessWidget {
-  final int pendingApplications;
   final List<TeacherTask> tasks;
   final ValueChanged<String> onTap;
 
-  const _TeacherTasksCard({
-    required this.pendingApplications,
-    required this.tasks,
-    required this.onTap,
-  });
+  const _TeacherTasksCard({required this.tasks, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final normalizedTasks = [
-      if (pendingApplications > 0)
-        TeacherTask(
-          title: TeacherHomeStrings.reviewApplications,
-          message: '$pendingApplications đơn đang chờ giáo viên xử lý',
-          count: pendingApplications,
-          type: 'pending_application',
-        ),
-      ...tasks,
-    ];
+    final visibleTasks = tasks
+        .where((task) => !_isBlockedTeacherTask(task))
+        .take(4)
+        .toList(growable: false);
 
     return _TeacherInfoCard(
       child: Column(
@@ -30,29 +19,43 @@ class _TeacherTasksCard extends StatelessWidget {
         children: [
           const _TeacherSectionHeader(title: TeacherHomeStrings.tasksTitle),
           const SizedBox(height: 10),
-          if (normalizedTasks.isEmpty)
+          if (visibleTasks.isEmpty)
             const _TeacherEmptyContent(
               icon: Icons.task_alt_rounded,
               title: TeacherHomeStrings.noTasksTitle,
               message: TeacherHomeStrings.noTasksMessage,
             )
           else
-            for (
-              var index = 0;
-              index < normalizedTasks.take(4).length;
-              index++
-            ) ...[
+            for (var index = 0; index < visibleTasks.length; index++) ...[
               _TaskTile(
-                item: normalizedTasks[index],
-                onTap: () => onTap(normalizedTasks[index].title),
+                item: visibleTasks[index],
+                onTap: () => onTap(visibleTasks[index].title),
               ),
-              if (index != normalizedTasks.take(4).length - 1)
+              if (index != visibleTasks.length - 1)
                 const Divider(height: 18, color: TeacherHomeColors.border),
             ],
         ],
       ),
     );
   }
+}
+
+bool _isBlockedTeacherTask(TeacherTask task) {
+  final value = '${task.type} ${task.title}'.toLowerCase().trim();
+
+  return value.contains('application') ||
+      value.contains('request') ||
+      value.contains('pending_application') ||
+      value.contains('pending_request') ||
+      value.contains('đơn') ||
+      value.contains('duyệt') ||
+      value.contains('duyet') ||
+      value.contains('send_notification') ||
+      value.contains('sendnotification') ||
+      value.contains('send notification') ||
+      value.contains('notification_send') ||
+      value.contains('gửi thông báo') ||
+      value.contains('gui thong bao');
 }
 
 class _TaskTile extends StatelessWidget {

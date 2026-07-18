@@ -8,6 +8,9 @@ abstract final class RequestsStrings {
   static const String recentRequestsTitle = 'Đơn gần đây';
   static const String createRequestComingSoon =
       'Chức năng tạo đơn đang được phát triển';
+  static const String parentOnlyTitle = 'Chỉ phụ huynh được gửi đơn';
+  static const String parentOnlyMessage =
+      'Tài khoản học sinh không có chức năng đơn từ. Vui lòng dùng tài khoản phụ huynh để tạo và theo dõi đơn.';
   static const String loadFailed = 'Không thể tải dữ liệu đơn từ';
   static const String retry = 'Thử lại';
   static const String noRequestTypesTitle = 'Chưa có loại đơn';

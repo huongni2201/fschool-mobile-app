@@ -37,7 +37,7 @@ dependencies:
   dio: ^5.9.0
   flutter_secure_storage: ^10.3.1
   get_it: ^9.2.1
-  file_picker: ^3.0.4
+  file_picker: ^12.0.0-beta.7
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +49,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+dependency_overrides:
+  package_config: ^3.0.0
+  xml: ^7.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,9 +1,10 @@
 part of '../pages/timetable_page.dart';
 
 class _TimetableTopBar extends StatelessWidget {
+  final bool isTeacher;
   final VoidCallback onBack;
 
-  const _TimetableTopBar({required this.onBack});
+  const _TimetableTopBar({required this.isTeacher, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +12,12 @@ class _TimetableTopBar extends StatelessWidget {
       children: [
         _CircleIconButton(icon: Icons.arrow_back_rounded, onTap: onBack),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Th\u1EDDi kho\u00E1 bi\u1EC3u',
+              const Text(
+                'Thời khoá biểu',
                 style: TextStyle(
                   color: AppColors.homeTextStrong,
                   fontSize: 24,
@@ -26,7 +27,7 @@ class _TimetableTopBar extends StatelessWidget {
               ),
               SizedBox(height: 5),
               Text(
-                'L\u1ECBch h\u1ECDc theo tu\u1EA7n',
+                isTeacher ? 'Lịch dạy theo tuần' : 'Lịch học theo tuần',
                 style: TextStyle(
                   color: AppColors.homeTextMuted,
                   fontSize: 13,

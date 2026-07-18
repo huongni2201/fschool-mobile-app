@@ -13,6 +13,8 @@ import '../../features/requests/data/models/request_display_models.dart';
 import '../../features/requests/presentation/pages/create_request_page.dart';
 import '../../features/requests/presentation/pages/requests_page.dart';
 import '../../features/schedule/presentation/pages/timetable_page.dart';
+import '../../features/teacher_home/presentation/pages/teacher_class_students_page.dart';
+import '../../features/teacher_home/presentation/pages/teacher_grade_classes_page.dart';
 import '../../features/teacher_home/presentation/pages/teacher_home_page.dart';
 import '../../features/tuition/presentation/pages/tuition_page.dart';
 import '../auth/user_role_resolver.dart';
@@ -30,6 +32,14 @@ abstract final class AppRouter {
       RouterNames.home => _buildRoute(settings, _homePageForRole()),
       RouterNames.parentHome => _buildRoute(settings, const ParentHomePage()),
       RouterNames.teacherHome => _buildRoute(settings, const TeacherHomePage()),
+      RouterNames.teacherGrades => _buildRoute(
+        settings,
+        const TeacherGradeClassesPage(),
+      ),
+      RouterNames.teacherClassStudents => _buildRoute(
+        settings,
+        _teacherClassStudentsPage(settings),
+      ),
       RouterNames.semesterGrades => _buildRoute(
         settings,
         SemesterGradesPage(studentId: _studentIdFromArguments(settings)),
@@ -86,6 +96,16 @@ abstract final class AppRouter {
     }
 
     return const RequestsPage();
+  }
+
+  static Widget _teacherClassStudentsPage(RouteSettings settings) {
+    final arguments = settings.arguments;
+
+    if (arguments is TeacherClassStudentsPageArgs) {
+      return TeacherClassStudentsPage(classSummary: arguments.classSummary);
+    }
+
+    return const TeacherGradeClassesPage();
   }
 
   static Widget _homePageForRole() {

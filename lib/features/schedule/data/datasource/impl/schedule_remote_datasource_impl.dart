@@ -9,6 +9,16 @@ class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
     'TIMETABLE_PATH',
     defaultValue: '/students/me/timetable',
   );
+  static const String teacherTimetablePath = String.fromEnvironment(
+    'TEACHER_TIMETABLE_PATH',
+    defaultValue: '/timetables',
+  );
+  static const String timetableAcademicYearId = String.fromEnvironment(
+    'TIMETABLE_ACADEMIC_YEAR_ID',
+  );
+  static const String timetableSemesterId = String.fromEnvironment(
+    'TIMETABLE_SEMESTER_ID',
+  );
   static const String startDateParam = String.fromEnvironment(
     'TIMETABLE_START_DATE_PARAM',
     defaultValue: 'startDate',
@@ -26,11 +36,8 @@ class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
     final normalizedWeekStart = _dateOnly(weekStart);
     final weekEnd = normalizedWeekStart.add(const Duration(days: 6));
     final response = await ApiClient.dio.get(
-      _pathForStudent(timetablePath, studentId, 'timetable'),
-      queryParameters: {
-        startDateParam: _formatDate(normalizedWeekStart),
-        endDateParam: _formatDate(weekEnd),
-      },
+      _timetablePath(studentId),
+      queryParameters: _queryParameters(normalizedWeekStart, weekEnd),
     );
     final responseData = _jsonMap(response.data);
 
@@ -53,6 +60,35 @@ class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
       fallbackWeekStart: normalizedWeekStart,
       fallbackWeekEnd: weekEnd,
     );
+  }
+
+  String _timetablePath(String? studentId) {
+    if (TokenStorage.isTeacher) return teacherTimetablePath;
+
+    return _pathForStudent(timetablePath, studentId, 'timetable');
+  }
+
+  Map<String, dynamic> _queryParameters(DateTime weekStart, DateTime weekEnd) {
+    if (TokenStorage.isTeacher) {
+      final queryParameters = <String, dynamic>{};
+      final academicYearId = timetableAcademicYearId.trim();
+      final semesterId = timetableSemesterId.trim();
+
+      if (academicYearId.isNotEmpty) {
+        queryParameters['academicYearId'] = academicYearId;
+      }
+
+      if (semesterId.isNotEmpty) {
+        queryParameters['semesterId'] = semesterId;
+      }
+
+      return queryParameters;
+    }
+
+    return {
+      startDateParam: _formatDate(weekStart),
+      endDateParam: _formatDate(weekEnd),
+    };
   }
 
   String _pathForStudent(String studentPath, String? studentId, String suffix) {

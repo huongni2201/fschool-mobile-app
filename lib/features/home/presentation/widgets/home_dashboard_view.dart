@@ -11,7 +11,6 @@ class _HomeDashboardView extends StatelessWidget {
   final VoidCallback onOpenTimetable;
   final VoidCallback onOpenExams;
   final VoidCallback onOpenNotifications;
-  final VoidCallback onOpenRequests;
   final VoidCallback onOpenTuition;
   final VoidCallback onOpenClubs;
 
@@ -27,7 +26,6 @@ class _HomeDashboardView extends StatelessWidget {
     required this.onOpenTimetable,
     required this.onOpenExams,
     required this.onOpenNotifications,
-    required this.onOpenRequests,
     required this.onOpenTuition,
     required this.onOpenClubs,
   });
@@ -64,7 +62,6 @@ class _HomeDashboardView extends StatelessWidget {
             onOpenGrades: onOpenGrades,
             onOpenTimetable: onOpenTimetable,
             onOpenExams: onOpenExams,
-            onOpenRequests: onOpenRequests,
             onOpenTuition: onOpenTuition,
             onOpenClubs: onOpenClubs,
           ),
