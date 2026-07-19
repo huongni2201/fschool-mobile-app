@@ -1,10 +1,12 @@
+import 'package:myfschool/core/error/exceptions.dart';
+
 class PasswordResetOtpRequest {
   final String phoneNumber;
 
   const PasswordResetOtpRequest({required this.phoneNumber});
 
   Map<String, dynamic> toJson() {
-    return {'phoneNumber': phoneNumber};
+    return {'phone': phoneNumber};
   }
 }
 
@@ -18,38 +20,34 @@ class PasswordResetOtpVerificationRequest {
   });
 
   Map<String, dynamic> toJson() {
-    return {'phoneNumber': phoneNumber, 'otp': otp};
+    return {'phone': phoneNumber, 'otp': otp};
   }
 }
 
 class PasswordResetRequest {
   final String phoneNumber;
-  final String otp;
-  final String? resetToken;
+  final String resetToken;
   final String newPassword;
 
   const PasswordResetRequest({
     required this.phoneNumber,
-    required this.otp,
+    required this.resetToken,
     required this.newPassword,
-    this.resetToken,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'phoneNumber': phoneNumber,
-      'otp': otp,
-      if (resetToken != null && resetToken!.isNotEmpty)
-        'resetToken': resetToken,
+      'phone': phoneNumber,
+      'resetToken': resetToken,
       'newPassword': newPassword,
     };
   }
 }
 
 class PasswordResetVerification {
-  final String? resetToken;
+  final String resetToken;
 
-  const PasswordResetVerification({this.resetToken});
+  const PasswordResetVerification({required this.resetToken});
 
   factory PasswordResetVerification.fromJson(Map<String, dynamic> json) {
     final data = _mapFromObject(json['data'] ?? json['result']);
@@ -59,6 +57,12 @@ class PasswordResetVerification {
       'token',
       'verificationToken',
     ]);
+
+    if (token == null) {
+      throw const ParsingException(
+        'Password reset verification response is missing resetToken',
+      );
+    }
 
     return PasswordResetVerification(resetToken: token);
   }

@@ -37,10 +37,7 @@ abstract final class ErrorMessageMapper {
         message,
         AppStrings.serverError,
       ),
-      ParsingFailure(:final message) => _messageOr(
-        message,
-        AppStrings.resetPasswordFailed,
-      ),
+      ParsingFailure() => AppStrings.resetPasswordFailed,
       Failure(:final message) => _messageOr(
         message,
         AppStrings.resetPasswordFailed,

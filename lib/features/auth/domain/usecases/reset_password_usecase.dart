@@ -7,13 +7,11 @@ class ResetPasswordUseCase {
 
   Future<void> call({
     required String phoneNumber,
-    required String otp,
     required String newPassword,
-    String? resetToken,
+    required String resetToken,
   }) {
     return repository.resetPassword(
       phoneNumber: phoneNumber,
-      otp: otp,
       newPassword: newPassword,
       resetToken: resetToken,
     );

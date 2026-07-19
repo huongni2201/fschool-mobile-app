@@ -47,6 +47,8 @@ class AuthRepositoryImpl implements AuthRepository {
       );
     } on DioException catch (error) {
       throw _mapDioException(error);
+    } on ServerException catch (error) {
+      throw AuthFailure(error.message);
     } on FormatException {
       throw const ParsingFailure();
     } on ParsingException catch (error) {
@@ -57,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<String?> verifyPasswordResetOtp({
+  Future<String> verifyPasswordResetOtp({
     required String phoneNumber,
     required String otp,
   }) async {
@@ -69,6 +71,8 @@ class AuthRepositoryImpl implements AuthRepository {
       return verification.resetToken;
     } on DioException catch (error) {
       throw _mapDioException(error);
+    } on ServerException catch (error) {
+      throw AuthFailure(error.message);
     } on FormatException {
       throw const ParsingFailure();
     } on ParsingException catch (error) {
@@ -81,21 +85,21 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> resetPassword({
     required String phoneNumber,
-    required String otp,
     required String newPassword,
-    String? resetToken,
+    required String resetToken,
   }) async {
     try {
       await remoteDataSource.resetPassword(
         PasswordResetRequest(
           phoneNumber: phoneNumber,
-          otp: otp,
-          newPassword: newPassword,
           resetToken: resetToken,
+          newPassword: newPassword,
         ),
       );
     } on DioException catch (error) {
       throw _mapDioException(error);
+    } on ServerException catch (error) {
+      throw AuthFailure(error.message);
     } on FormatException {
       throw const ParsingFailure();
     } on ParsingException catch (error) {

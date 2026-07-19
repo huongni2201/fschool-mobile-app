@@ -235,6 +235,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         otp: otp,
       );
 
+      if (resetToken.isEmpty) {
+        throw const FormatException();
+      }
+
       if (!mounted) return;
 
       setState(() {
@@ -264,8 +268,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     if (!isValid || _isLoading) return;
 
     final phoneNumber = _phoneNumber;
-    final otp = _otp;
+    final resetToken = _resetToken;
     final newPassword = _newPasswordController.text;
+
+    if (resetToken == null || resetToken.isEmpty) {
+      _showError(const FormatException());
+      return;
+    }
 
     setState(() {
       _isLoading = true;
@@ -274,9 +283,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     try {
       await _resetPasswordUseCase(
         phoneNumber: phoneNumber,
-        otp: otp,
         newPassword: newPassword,
-        resetToken: _resetToken,
+        resetToken: resetToken,
       );
 
       if (!mounted) return;
@@ -388,7 +396,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ),
       _ForgotPasswordStep.otp => _OtpStep(
         key: const ValueKey('forgot-password-otp'),
-        phoneNumber: _phoneNumber,
         controller: _otpController,
         validator: _validateOtp,
         onSubmitted: (_) => _submitOtp(),
@@ -465,7 +472,6 @@ class _PhoneStep extends StatelessWidget {
 }
 
 class _OtpStep extends StatelessWidget {
-  final String phoneNumber;
   final TextEditingController controller;
   final String? Function(String?) validator;
   final ValueChanged<String> onSubmitted;
@@ -475,7 +481,6 @@ class _OtpStep extends StatelessWidget {
 
   const _OtpStep({
     super.key,
-    required this.phoneNumber,
     required this.controller,
     required this.validator,
     required this.onSubmitted,
@@ -490,7 +495,7 @@ class _OtpStep extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${AppStrings.enterOtpForResetPassword}\n$phoneNumber',
+          AppStrings.enterOtpForResetPassword,
           style: const TextStyle(
             color: AppColors.textSecondary,
             fontSize: 14,

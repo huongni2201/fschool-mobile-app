@@ -127,7 +127,7 @@ abstract final class AppStrings {
 
   static const String enterPhoneForOtp = 'Nhập số điện thoại để nhận mã OTP';
   static const String enterOtpForResetPassword =
-      'Nhập mã OTP đã được gửi tới số điện thoại của bạn';
+      'Nhập mã OTP đã được gửi tới email của bạn';
   static const String enterNewPasswordForReset =
       'Tạo mật khẩu mới để hoàn tất quá trình đặt lại mật khẩu';
 
@@ -145,7 +145,7 @@ abstract final class AppStrings {
       'Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.';
 
   static String otpWillBeSent(String phoneNumber) {
-    return 'Sẽ gửi mã OTP tới số $phoneNumber';
+    return 'Mã OTP đã được gửi tới email của tài khoản $phoneNumber';
   }
 
   static String homeFeatureUnavailable(String featureName) {

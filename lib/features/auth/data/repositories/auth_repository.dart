@@ -5,15 +5,14 @@ abstract class AuthRepository {
 
   Future<void> requestPasswordResetOtp({required String phoneNumber});
 
-  Future<String?> verifyPasswordResetOtp({
+  Future<String> verifyPasswordResetOtp({
     required String phoneNumber,
     required String otp,
   });
 
   Future<void> resetPassword({
     required String phoneNumber,
-    required String otp,
     required String newPassword,
-    String? resetToken,
+    required String resetToken,
   });
 }
